@@ -8,9 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>$Title$</title>
+    <title>NetDisk</title>
   </head>
   <body>
-  $END$
+    <form action="/Login" method="post">
+       用户名：<input type="text" name="username" id="username"/><br/>
+       密码：<input type="password" id="pw" name="pw"/>
+        <input type="submit" >
+    </form>
   </body>
+
 </html>
