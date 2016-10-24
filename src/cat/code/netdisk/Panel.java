@@ -24,8 +24,8 @@ public class Panel extends HttpServlet{
         IsLogin il=new IsLogin();
         int login=il.isLogin(session,request,response);
         if(login==1){
-            request. setCharacterEncoding("UTF-8");
-            response.getWriter().write("<a href=\"/Logout\" > Logout</a>");
+            new List().setList(session);
+            response.sendRedirect("Panel.jsp");
         }else{
             response.setHeader("Content-type", "text/html;charset=UTF-8");
             response.getWriter().write(" <script type=\"text/javascript\" >alert(\"请先登陆\");</script>\n");
