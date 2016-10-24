@@ -22,9 +22,13 @@ public class Index extends HttpServlet{
     }
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        HttpSession session = request.getSession(true);
+
+
         IsLogin il=new IsLogin();
-        if(il.check(request)){
-            response.getWriter().write("login");
+        int login=il.isLogin(session,request,response);
+        if(login==1){
+            response.getWriter().write("aa");
         }else {
             File file = new File(getServletContext().getRealPath("/")+"Init.jsp");
             if(file.exists()){
@@ -33,7 +37,5 @@ public class Index extends HttpServlet{
                 response.sendRedirect("index.jsp");
             }
         }
-
     }
-
 }

@@ -44,7 +44,7 @@ public class Login extends HttpServlet{
                 response.addCookie(token);
                 HttpSession session = request.getSession(true);
                 session.setAttribute("login","true");
-                session.setAttribute("username","username");
+                session.setAttribute("username",username);
                 session.setAttribute("token",token);
                 response.sendRedirect("/");
             }

@@ -3,10 +3,7 @@ package cat.code.netdisk;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -16,10 +13,12 @@ import java.sql.SQLException;
  * @author Image
  */
 @WebServlet(name="token",urlPatterns = "/token")
-public class token extends HttpServlet{
-    public String aa(HttpServletRequest request, HttpServletResponse response){
-        String token=null;
-        String username=null;
+public class token{
+    String token=null;
+    String username=null;
+    String checktoken=null;
+
+    public String getToken(HttpServletRequest request, HttpServletResponse response){
         Cookie cookie = null;
         Cookie[] cookies = null;
         cookies = request.getCookies();
@@ -38,9 +37,14 @@ public class token extends HttpServlet{
         try {
             ResultSet rs = db.pst.executeQuery();
             if (rs.next()) {
-                String checktoken = rs.getString("password");
+                checktoken = rs.getString("password");
                 checktoken = DigestUtils.sha1Hex(username + checktoken);
-                return token+" "+checktoken;
+                if(token.equals(checktoken)){
+                    return "true";
+                }else {
+                    return "false";
+                }
+
             }else {
                 return username+token;
             }
@@ -48,5 +52,16 @@ public class token extends HttpServlet{
             e.printStackTrace();
             return "a";
         }
+    }
+    public void setSession(HttpSession session){
+        session.setAttribute("login","true");
+        session.setAttribute("username",username);
+        session.setAttribute("token",token);
+    }
+    public String cookieToken(){
+        return checktoken;
+    }
+    public String sessionToken(){
+        return token;
     }
 }
