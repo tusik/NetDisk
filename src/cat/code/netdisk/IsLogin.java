@@ -3,9 +3,7 @@ package cat.code.netdisk;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.http.*;
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 
 /**
  * Created by zinc on 2016/10/23.
@@ -13,11 +11,6 @@ import java.sql.SQLException;
  * @author Image
  */
 public class IsLogin {
-
-    String token = null;
-    String username = null;
-    Cookie cookie = null;
-    Cookie[] cookies = null;
 
 
     public IsLogin(){}

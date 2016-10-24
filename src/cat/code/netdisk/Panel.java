@@ -4,6 +4,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -19,12 +20,15 @@ public class Panel extends HttpServlet{
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException{
+        HttpSession session = request.getSession(true);
         IsLogin il=new IsLogin();
-        //if(il.check(request)){
-
-        //}else{
+        int login=il.isLogin(session,request,response);
+        if(login==1){
+            request. setCharacterEncoding("UTF-8");
+            response.getWriter().write("<a href=\"/Logout\" > Logout</a>");
+        }else{
             response.setHeader("Content-type", "text/html;charset=UTF-8");
             response.getWriter().write(" <script type=\"text/javascript\" >alert(\"请先登陆\");</script>\n");
-        //}
+        }
     }
 }

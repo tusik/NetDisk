@@ -39,17 +39,18 @@ public class InitSystem extends HttpServlet{
             adminpw=DigestUtils.sha256Hex(adminpw+salt);
             createDatabase();
             createAdmin(adminname,adminpw);
+            File oldfile = new File(getServletContext().getRealPath("/")+"Init.jsp");
+            File newfile = new File(getServletContext().getRealPath("/")+"Init-"
+                    + RandomStringUtils.randomAlphanumeric(6).toString()+".jsp");
+            oldfile.renameTo(newfile);
+            response.sendRedirect("/");
         }else {
             PrintWriter out= response.getWriter();
             out.print("Initialization failed,please check does config file exist");
             out.flush();
             out.close();
         }
-        File oldfile = new File(getServletContext().getRealPath("/")+"Init.jsp");
-        File newfile = new File(getServletContext().getRealPath("/")+"Init-"
-                + RandomStringUtils.randomAlphanumeric(6).toString()+".jsp");
-        oldfile.renameTo(newfile);
-        response.sendRedirect("/");
+
     }
 
     public boolean ConfigSetting(String dbname,String dbuser,String dbpw,String adminname,
