@@ -21,8 +21,10 @@ public class List extends HttpServlet{
             throws IOException{
 
     }
-    String filedir=this.getClass().getClassLoader().getResource("../../file").getPath();
     public void setList(HttpSession session){
+        String username= (String) session.getAttribute("username");
+        String filedir=this.getClass().getClassLoader().getResource("../../files/"
+                +username).getPath();
         ArrayList<String> dirlist = new ArrayList<>();
         ArrayList<String> filelist = new ArrayList<>();
         File f = new File(filedir);
@@ -33,7 +35,6 @@ public class List extends HttpServlet{
             }else if(files[i].isFile()){
                 filelist.add(files[i].getName());
             }
-
         }
         setSession(session,dirlist,filelist);
     }

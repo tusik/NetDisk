@@ -1,5 +1,6 @@
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %><%--
+
+<%@ page import="java.util.ArrayList" %>
+<%--
   Created by IntelliJ IDEA.
   User: zinc
   Date: 2016/10/24
@@ -19,17 +20,25 @@
 <div class="main">
     <%if(session.getAttribute("login").equals("true")){%>
     <div class="layer1">
-        <%
-            ArrayList<String> l=(ArrayList) session.getAttribute("dirlist");
-            if(l!=null){
-                for(int i=0;i<l.size();i++){
-                    out.print("<p class=\"dir\">"+l.get(i)+"</p>");
+        <div class="listlayer">
+            <%
+                ArrayList<String> dirlist=(ArrayList) session.getAttribute("dirlist");
+                ArrayList<String> filelist=(ArrayList) session.getAttribute("filelist");
+                if(dirlist !=null ){
+                    for(int i=0;i<dirlist.size();i++){
+                        out.print("<p class=\"dir\"><a href=\""+dirlist.get(i)+"\">"+dirlist.get(i)+"</a></p>");
+                    }
+                    if(filelist!=null){
+                        for(int i=0;i<filelist.size();i++){
+                            out.print("<p class=\"dir\"><a href=\""+filelist.get(i)+"\">"+filelist.get(i)+"</a></p>");
+                        }
+                    }
+                }else {
+                    out.print("false");
                 }
-            }else {
-                out.print("false");
-            }
-
-        %>
+            %>
+            <a href="/Files">aaa</a>
+        </div>
     </div>
     <%}else{%>
 

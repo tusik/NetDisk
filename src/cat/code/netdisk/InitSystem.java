@@ -35,7 +35,7 @@ public class InitSystem extends HttpServlet{
         String adminpw=request.getParameter("adminpw");
         String salt=request.getParameter("salt");
 
-        if(ConfigSetting(dbname,dbuser,dbpw,adminname,salt)){
+        if(configSetting(dbname,dbuser,dbpw,adminname,salt)){
             adminpw=DigestUtils.sha256Hex(adminpw+salt);
             createDatabase();
             createAdmin(adminname,adminpw);
@@ -43,6 +43,7 @@ public class InitSystem extends HttpServlet{
             File newfile = new File(getServletContext().getRealPath("/")+"Init-"
                     + RandomStringUtils.randomAlphanumeric(6).toString()+".jsp");
             oldfile.renameTo(newfile);
+            createFileDir(adminname);
             response.sendRedirect("/");
         }else {
             PrintWriter out= response.getWriter();
@@ -52,9 +53,12 @@ public class InitSystem extends HttpServlet{
         }
 
     }
-
-    public boolean ConfigSetting(String dbname,String dbuser,String dbpw,String adminname,
-                                 String salt){
+    public void createFileDir(String username){
+        File filedir = new File(getServletContext().getRealPath("/")+"files/"+username);
+        filedir.mkdirs();
+    }
+    public boolean configSetting(String dbname,String dbuser,String dbpw,
+                                 String adminname, String salt){
         try {
 
             String content = "dbname="+dbname+
@@ -88,6 +92,8 @@ public class InitSystem extends HttpServlet{
                 "`username` char(20) NOT NULL ," +
                 "`password` char(64) NOT NULL ," +
                 "`rank` int NOT NULL DEFAULT '0'," +
+                "`filecount` int NOT NULL DEFAULT '0'," +
+                "`diskused` double(16,2) NOT NULL DEFAULT '0.0'," +
                 "`regdate` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,"+
                 "PRIMARY KEY (`id`))";
         db.insert(sql);
