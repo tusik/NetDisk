@@ -22,15 +22,15 @@ public class Index extends HttpServlet{
     }
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        HttpSession session = request.getSession(true);
-        IsLogin il=new IsLogin();
-        int login=il.isLogin(session,request,response);
-        if(login==1){
-            response.sendRedirect("/Panel");
+        File file = new File(getServletContext().getRealPath("/")+"Init.jsp");
+        if(file.exists()){
+            response.sendRedirect("Init.jsp");
         }else {
-            File file = new File(getServletContext().getRealPath("/")+"Init.jsp");
-            if(file.exists()){
-                response.sendRedirect("Init.jsp");
+            HttpSession session = request.getSession(true);
+            IsLogin il=new IsLogin();
+            int login=il.isLogin(session,request,response);
+            if(login==1){
+                response.sendRedirect("/Panel");
             }else {
                 response.sendRedirect("index.jsp");
             }

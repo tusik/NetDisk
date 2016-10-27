@@ -19,6 +19,17 @@
 
 <div class="main">
     <%if(session.getAttribute("login").equals("true")){%>
+    <%
+        String predir=request.getParameter("dir");
+        if(predir!=null){
+            String tmp[]=predir.split("/");
+            predir="";
+            for(int i=1;i<tmp.length-1;i++)predir+=tmp[i];
+        }else {
+            predir="";
+        }
+
+    %>
     <div class="layer1">
         <div class="listlayer">
             <%
@@ -26,18 +37,26 @@
                 ArrayList<String> filelist=(ArrayList) session.getAttribute("filelist");
                 if(dirlist !=null ){
                     for(int i=0;i<dirlist.size();i++){
-                        out.print("<p class=\"dir\"><a href=\""+dirlist.get(i)+"\">"+dirlist.get(i)+"</a></p>");
+                        out.print("<p class=\"dir\"><a href=\"/Panel?dir="+request.getParameter("dir")
+                                +"/"+dirlist.get(i)+"\">"+dirlist.get(i)+"</a></p>");
                     }
                     if(filelist!=null){
                         for(int i=0;i<filelist.size();i++){
-                            out.print("<p class=\"dir\"><a href=\""+filelist.get(i)+"\">"+filelist.get(i)+"</a></p>");
+                            out.print("<p class=\"dir\"><a href=\"/Files/"+session.getAttribute("username")
+                                    +request.getParameter("dir")+"/"+filelist.get(i)+"\">"
+                                    +filelist.get(i)+"</a></p>");
                         }
                     }
                 }else {
-                    out.print("false");
+                    out.print("null");
                 }
             %>
-            <a href="/Files">aaa</a>
+            <form action="/CreateDir" method="post" class="newdir">
+                <input class="pinput" type="text" id="dname" name="dname" value="<%=request.getParameter("dir")%>/"/><br/>
+                <input class="pinput" type="submit" value="创建目录"><br/>
+            </form>
+            <a href="/Panel?dir=/<%=predir%>">..</a><br/>
+            <a href="/Logout">Logout</a>
         </div>
     </div>
     <%}else{%>

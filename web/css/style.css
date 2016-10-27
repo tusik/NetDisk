@@ -71,7 +71,7 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 	width:100%;
 	height:100%;
 }
-.layer1{
+.main .layer1{
 	margin:0 auto;
 	width: 80%;
 	height: 80%;
@@ -80,4 +80,18 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 .listlayer{
 	margin-left: 20px;
 	padding: 1px;
+}
+.code404{
+	text-align: center;
+	color: #fff;
+	padding-top: 10px;
+	font-size: 5em;
+}
+.newdir{
+	width:80% ;
+	text-align: center;
+	margin: 0 auto;
+}
+.pinput{
+	width: 80%;
 }

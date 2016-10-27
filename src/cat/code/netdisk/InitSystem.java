@@ -54,7 +54,8 @@ public class InitSystem extends HttpServlet{
 
     }
     public void createFileDir(String username){
-        File filedir = new File(getServletContext().getRealPath("/")+"files/"+username);
+        File filedir = new File(getServletContext().getRealPath("/")+
+                "WEB-INF/files/"+username);
         filedir.mkdirs();
     }
     public boolean configSetting(String dbname,String dbuser,String dbpw,

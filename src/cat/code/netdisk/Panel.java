@@ -22,16 +22,19 @@ public class Panel extends HttpServlet{
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
+        String dir=request.getParameter("dir");
+        if(dir==null)dir="";
         HttpSession session = request.getSession(true);
         IsLogin il=new IsLogin();
         int login=il.isLogin(session,request,response);
         if(login==1){
-            new List().setList(session);
+            new List().setList(session,dir);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/Panel.jsp");
             dispatcher.forward(request, response);
         }else{
             response.setHeader("Content-type", "text/html;charset=UTF-8");
             response.getWriter().write(" <script type=\"text/javascript\" >alert(\"请先登陆\");</script>\n");
+            response.sendRedirect("/");
         }
     }
 }
