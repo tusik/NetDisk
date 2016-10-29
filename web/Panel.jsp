@@ -33,8 +33,8 @@
     <div class="layer1">
         <div class="listlayer">
             <%
-                ArrayList<String> dirlist=(ArrayList) session.getAttribute("dirlist");
-                ArrayList<String> filelist=(ArrayList) session.getAttribute("filelist");
+                ArrayList<String> dirlist=(ArrayList) request.getAttribute("dirlist");
+                ArrayList<String> filelist=(ArrayList) request.getAttribute("filelist");
                 if(dirlist !=null ){
                     String dir=request.getParameter("dir");
                     if(dir==null)dir="";
@@ -49,7 +49,9 @@
                             out.print("<p class=\"dir\"><a href=\"/GetFiles/"+session.getAttribute("username")
                                     +dir+"/"+filelist.get(i)+"\">"
                                     +filelist.get(i)+"</a><a class=\"del\" href=\"Delete?path="
-                                    +dir+"/"+filelist.get(i)+"\">del</a></p>");
+                                    +dir+"/"+filelist.get(i)+"\">|del</a><a class=\"del\" href=\"Share?path="
+                                    + dir + "/" + filelist.get(i) + "&user="+session.getAttribute("username")
+                                    +"\">|Share</a></p>");
                         }
                     }
                 }else {
@@ -61,6 +63,7 @@
                 <input class="pinput" type="submit" value="Create Dir"><br/>
             </form>
             <a href="/Panel?dir=/<%=predir%>">..</a><br/>
+            <a href="/Sharelist">Share List</a><br/>
             <a href="/Logout">Logout</a>
         </div>
     </div>

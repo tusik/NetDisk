@@ -21,7 +21,9 @@ public class List extends HttpServlet{
             throws IOException{
 
     }
-    public void setList(HttpSession session,String dir,HttpServletResponse response) throws IOException {
+    public void setList(HttpServletRequest request,HttpServletResponse response,String dir)
+            throws IOException {
+        HttpSession session = request.getSession();
         String username= (String) session.getAttribute("username");
         String filedir=this.getClass().getClassLoader().getResource("../../WEB-INF/files/"
                 +username+"/").getPath();
@@ -40,12 +42,12 @@ public class List extends HttpServlet{
                 filelist.add(files[i].getName());
             }
         }
-        setSession(session,dirlist,filelist);
+        setRequest(request,dirlist,filelist);
     }
 
-    public void setSession(HttpSession session,ArrayList dirlist,ArrayList filelist){
-        session.setAttribute("dirlist",dirlist);
-        session.setAttribute("filelist",filelist);
+    public void setRequest(HttpServletRequest request,ArrayList dirlist,ArrayList filelist){
+        request.setAttribute("dirlist",dirlist);
+        request.setAttribute("filelist",filelist);
 
     }
 }

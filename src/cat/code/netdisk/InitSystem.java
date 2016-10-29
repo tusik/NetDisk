@@ -113,7 +113,7 @@ public class InitSystem extends HttpServlet{
                 "`password` char(64) NOT NULL ," +
                 "`rank` tinyint NOT NULL DEFAULT '0'," +
                 "`regdate` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,"+
-                "PRIMARY KEY (`id`));";
+                "PRIMARY KEY (`id`))";
         String sql1=
                 "CREATE TABLE `files`("+
                 "`id` int NOT NULL AUTO_INCREMENT,"+
@@ -121,10 +121,21 @@ public class InitSystem extends HttpServlet{
                 "`diskused` decimal(8,2) NOT NULL DEFAULT '0.0',"+
                 "`maxdisk` decimal(8,2) NOT NULL DEFAULT '"+size+"',"+
                 "PRIMARY KEY (`id`))";
-        db.insert(sql);
+        String sql2= "CREATE TABLE `share`(" +
+                "`id` int(11) NOT NULL AUTO_INCREMENT,"+
+                "`path` varchar(500) NOT NULL," +
+                "`code` char(6) NOT NULL,"+
+                "`username` varchar(20) NOT NULL," +
+                "`downcount` int NOT NULL DEFAULT '0'," +
+                "`time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP," +
+                "`del` tinyint NOT NULL DEFAULT '0'," +
+                "PRIMARY KEY(`id`))";
         try {
+            db.insert(sql);
             db.pst.executeUpdate();
             db.insert(sql1);
+            db.pst.executeUpdate();
+            db.insert(sql2);
             db.pst.executeUpdate();
             return true;
         } catch (SQLException e) {

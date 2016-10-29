@@ -28,12 +28,12 @@ public class Panel extends HttpServlet{
         IsLogin il=new IsLogin();
         int login=il.isLogin(session,request,response);
         if(login==1||login==3){
-            new List().setList(session,dir,response);
+            new List().setList(request,response,dir);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/Panel.jsp");
             dispatcher.forward(request, response);
         }else{
             response.setHeader("Content-type", "text/html;charset=UTF-8");
-            response.getWriter().write(" <script type=\"text/javascript\" >alert(\"请先登陆\");</script>\n");
+            response.getWriter().write(" <script type=\"text/javascript\" >alert(\"Login first\");</script>\n");
             response.sendRedirect("/");
         }
     }
