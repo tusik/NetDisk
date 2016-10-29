@@ -21,14 +21,18 @@ public class List extends HttpServlet{
             throws IOException{
 
     }
-    public void setList(HttpSession session,String dir){
+    public void setList(HttpSession session,String dir,HttpServletResponse response) throws IOException {
         String username= (String) session.getAttribute("username");
         String filedir=this.getClass().getClassLoader().getResource("../../WEB-INF/files/"
-                +username+"/"+dir).getPath();
+                +username+"/").getPath();
+        filedir=filedir+dir;
+        response.getWriter().write(filedir);
+        response.getWriter().write(username);
         ArrayList<String> dirlist = new ArrayList<>();
         ArrayList<String> filelist = new ArrayList<>();
         File f = new File(filedir);
         File[] files = f.listFiles();
+        if(files.length>0)
         for (int i=0;i<files.length;i++){
             if(files[i].isDirectory()){
                 dirlist.add(files[i].getName());

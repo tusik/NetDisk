@@ -29,6 +29,7 @@ public class CreateDir extends HttpServlet{
             if(createDir(dirname, (String) session.getAttribute("username"))){
                 response.sendRedirect(request.getHeader("Referer"));
             }else {
+                response.getWriter().write("<script>alert(\"illegal dir name\");</script>");
                 response.sendRedirect(request.getHeader("Referer"));
             }
         }
@@ -36,10 +37,10 @@ public class CreateDir extends HttpServlet{
     public boolean createDir(String dirname,String username){
 
         if(dirCheck(dirname)){
-            String filedir=this.getClass().getClassLoader().getResource("../../WEB-INF/files/"
+            String filedir = this.getClass().getClassLoader().getResource("../../WEB-INF/files/"
                     +username+"/").getPath();
-            filedir+=dirname;
-            File newdir =new File(filedir);
+            filedir += dirname;
+            File newdir = new File(filedir);
             if(!newdir.exists())newdir.mkdirs();
             return true;
         }else {
@@ -50,15 +51,13 @@ public class CreateDir extends HttpServlet{
     public boolean dirCheck(String dir){
         String pattern = "((.*)(\\.)(.*)|(.*)>(.*)|(.*)<(.*)|(.*)\\?(.*)|" +
                 "(.*)(\\*)(.*)|(.*)(:)(.*)|(.*)(\\\\)(.*)|(.*)\\|(.*)|(.*)\"(.*))";
-
-        // 创建 Pattern 对象
+        //创建Pattern对象
         Pattern r = Pattern.compile(pattern);
-
-        // 现在创建 matcher 对象
+        //创建matcher对象
         Matcher m = r.matcher(dir);
-        if (m.find( )) {
+        if(m.find()){
             return false;
-        } else {
+        } else{
             return true;
         }
     }

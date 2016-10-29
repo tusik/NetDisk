@@ -27,8 +27,8 @@ public class Panel extends HttpServlet{
         HttpSession session = request.getSession(true);
         IsLogin il=new IsLogin();
         int login=il.isLogin(session,request,response);
-        if(login==1){
-            new List().setList(session,dir);
+        if(login==1||login==3){
+            new List().setList(session,dir,response);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/Panel.jsp");
             dispatcher.forward(request, response);
         }else{

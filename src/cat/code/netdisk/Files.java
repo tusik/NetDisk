@@ -15,8 +15,9 @@ import java.util.ArrayList;
  *
  * @author Image
  */
-@WebServlet(name = "Files" , urlPatterns = "/Files")
+@WebServlet(name = "GetFiles" , urlPatterns = "/GetFiles")
 public class Files extends HttpServlet {
+    ConfigLoader CL = new ConfigLoader();
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         doPost(request,response);
@@ -35,8 +36,8 @@ public class Files extends HttpServlet {
                 for(int i=1;i<s.length;i++)dir=dir+"/"+s[i];
             try{
                 //获取真实文件地址
-                filedir=this.getClass().getClassLoader().getResource("../../WEB-INF/files/"
-                        +username+"/"+dir).getPath();
+                filedir=CL.GetValueByKey("basepath")+"WEB-INF/files/"
+                        +username+"/"+dir;
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -51,7 +52,7 @@ public class Files extends HttpServlet {
         }
 
     }
-    public   void  downloadLocal(HttpServletResponse response,String filepath,String fileName)
+    public void downloadLocal(HttpServletResponse response,String filepath,String fileName)
             throws  FileNotFoundException {
         //下载本地文件
         //读到流中

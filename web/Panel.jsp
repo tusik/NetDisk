@@ -36,15 +36,20 @@
                 ArrayList<String> dirlist=(ArrayList) session.getAttribute("dirlist");
                 ArrayList<String> filelist=(ArrayList) session.getAttribute("filelist");
                 if(dirlist !=null ){
+                    String dir=request.getParameter("dir");
+                    if(dir==null)dir="";
                     for(int i=0;i<dirlist.size();i++){
-                        out.print("<p class=\"dir\"><a href=\"/Panel?dir="+request.getParameter("dir")
-                                +"/"+dirlist.get(i)+"\">"+dirlist.get(i)+"</a></p>");
+
+                        out.print("<p class=\"dir\"><a href=\"/Panel?dir="+dir+"/"
+                                +dirlist.get(i)+"\">"+dirlist.get(i)+"</a><a class=\"del\" href=\"Delete?path="
+                                + request.getParameter("dir") + dirlist.get(i) + "\">del</a></p>");
                     }
                     if(filelist!=null){
                         for(int i=0;i<filelist.size();i++){
-                            out.print("<p class=\"dir\"><a href=\"/Files/"+session.getAttribute("username")
-                                    +request.getParameter("dir")+"/"+filelist.get(i)+"\">"
-                                    +filelist.get(i)+"</a></p>");
+                            out.print("<p class=\"dir\"><a href=\"/GetFiles/"+session.getAttribute("username")
+                                    +dir+"/"+filelist.get(i)+"\">"
+                                    +filelist.get(i)+"</a><a class=\"del\" href=\"Delete?path="
+                                    +dir+"/"+filelist.get(i)+"\">del</a></p>");
                         }
                     }
                 }else {
@@ -53,7 +58,7 @@
             %>
             <form action="/CreateDir" method="post" class="newdir">
                 <input class="pinput" type="text" id="dname" name="dname" value="<%=request.getParameter("dir")%>/"/><br/>
-                <input class="pinput" type="submit" value="创建目录"><br/>
+                <input class="pinput" type="submit" value="Create Dir"><br/>
             </form>
             <a href="/Panel?dir=/<%=predir%>">..</a><br/>
             <a href="/Logout">Logout</a>

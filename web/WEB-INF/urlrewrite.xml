@@ -1,7 +1,7 @@
 <urlrewrite>
     <rule>
-        <from>/Files/(.*)</from>
-        <to >/Files?url=$1</to>
+        <from>/GetFiles/(.*)</from>
+        <to >/GetFiles?url=$1</to>
     </rule>
     <rule>
         <from>/Panel/(.*)</from>

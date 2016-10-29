@@ -21,6 +21,14 @@ import java.sql.SQLException;
 
 public class InitSystem extends HttpServlet{
 
+    String dbname=null;
+    String dbuser=null;
+    String dbpw=null;
+    String adminname=null;
+    String adminpw=null;
+    String salt=null;
+    String size=null;
+    String[] regopen=null;
     public void doGet(HttpServletRequest request,HttpServletResponse response)
             throws IOException {
         doPost(request,response);
@@ -28,30 +36,36 @@ public class InitSystem extends HttpServlet{
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws IOException{
-        String dbname=request.getParameter("dbname");
-        String dbuser=request.getParameter("dbuser");
-        String dbpw=request.getParameter("dbpw");
-        String adminname=request.getParameter("adminname");
-        String adminpw=request.getParameter("adminpw");
-        String salt=request.getParameter("salt");
+        dbname=request.getParameter("dbname");
+        dbuser=request.getParameter("dbuser");
+        dbpw=request.getParameter("dbpw");
+        adminname=request.getParameter("adminname");
+        adminpw=request.getParameter("adminpw");
+        String adminpw1=request.getParameter("adminpw1");
+        salt=request.getParameter("salt");
+        size=request.getParameter("size");
+        regopen=request.getParameterValues("reg");
 
-        if(configSetting(dbname,dbuser,dbpw,adminname,salt)){
-            adminpw=DigestUtils.sha256Hex(adminpw+salt);
-            createDatabase();
-            createAdmin(adminname,adminpw);
-            File oldfile = new File(getServletContext().getRealPath("/")+"Init.jsp");
-            File newfile = new File(getServletContext().getRealPath("/")+"Init-"
-                    + RandomStringUtils.randomAlphanumeric(6).toString()+".jsp");
-            oldfile.renameTo(newfile);
-            createFileDir(adminname);
-            response.sendRedirect("/");
+        if(adminpw1.equals(adminpw)){
+            if(configSetting(dbname,dbuser,dbpw,adminname,salt,size)){
+                adminpw=DigestUtils.sha256Hex(adminpw+salt);
+                if(!createDatabase())response.getWriter().write("database creating error");
+                createAdmin(adminname,adminpw);
+                File oldfile = new File(getServletContext().getRealPath("/")+"Init.jsp");
+                File newfile = new File(getServletContext().getRealPath("/")+"Init-"
+                        + RandomStringUtils.randomAlphanumeric(6).toString()+".jsp");
+                oldfile.renameTo(newfile);
+                createFileDir(adminname);
+                response.sendRedirect("/");
+            }else {
+                PrintWriter out= response.getWriter();
+                out.print("Initialization failed,please check does config file exist");
+                out.flush();
+                out.close();
+            }
         }else {
-            PrintWriter out= response.getWriter();
-            out.print("Initialization failed,please check does config file exist");
-            out.flush();
-            out.close();
+            response.sendRedirect(request.getHeader("Refer"));
         }
-
     }
     public void createFileDir(String username){
         File filedir = new File(getServletContext().getRealPath("/")+
@@ -59,15 +73,20 @@ public class InitSystem extends HttpServlet{
         filedir.mkdirs();
     }
     public boolean configSetting(String dbname,String dbuser,String dbpw,
-                                 String adminname, String salt){
+                                 String adminname, String salt,String size){
         try {
-
             String content = "dbname="+dbname+
                     "\ndbuser="+dbuser+
                     "\ndbpw="+dbpw+
                     "\nadminname="+adminname+
-                    "\nsalt="+salt;
-
+                    "\nsalt="+salt+
+                    "\nsize="+size+
+                    "\nbasepath="+getServletContext().getRealPath("/");
+            if(regopen[0]!=null){
+                content+="\nregopen=true";
+            }else {
+                content+="\nregopen=false";
+            }
             File file = new File(getServletContext().getRealPath("/")+
                     "WEB-INF/.properties");
             if (!file.exists()) {
@@ -89,16 +108,23 @@ public class InitSystem extends HttpServlet{
     public boolean createDatabase(){
         MySql db=new MySql();
         String sql="CREATE TABLE `user`(" +
-                "`id` int(11) NOT NULL AUTO_INCREMENT," +
-                "`username` char(20) NOT NULL ," +
+                "`id` int NOT NULL AUTO_INCREMENT," +
+                "`username` varchar(20) NOT NULL ," +
                 "`password` char(64) NOT NULL ," +
-                "`rank` int NOT NULL DEFAULT '0'," +
-                "`filecount` int NOT NULL DEFAULT '0'," +
-                "`diskused` double(16,2) NOT NULL DEFAULT '0.0'," +
+                "`rank` tinyint NOT NULL DEFAULT '0'," +
                 "`regdate` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,"+
+                "PRIMARY KEY (`id`));";
+        String sql1=
+                "CREATE TABLE `files`("+
+                "`id` int NOT NULL AUTO_INCREMENT,"+
+                "`filecount` int(11) NOT NULL DEFAULT '0' ,"+
+                "`diskused` decimal(8,2) NOT NULL DEFAULT '0.0',"+
+                "`maxdisk` decimal(8,2) NOT NULL DEFAULT '"+size+"',"+
                 "PRIMARY KEY (`id`))";
         db.insert(sql);
         try {
+            db.pst.executeUpdate();
+            db.insert(sql1);
             db.pst.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -113,9 +139,13 @@ public class InitSystem extends HttpServlet{
         MySql db = new MySql();
         String sql = "INSERT INTO `user` (username,password,rank)" +
                 " VALUES" +
-                "('"+adminname+"','"+pw+"','0')";
+                "('"+adminname+"','"+pw+"','0');";
+        String sql1=
+                "INSERT INTO `files` (maxdisk) VALUES(2048.0)";
         db.insert(sql);
         try {
+            db.pst.executeUpdate();
+            db.insert(sql1);
             db.pst.executeUpdate();
             return true;
         } catch (SQLException e) {

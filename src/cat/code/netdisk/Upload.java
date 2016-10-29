@@ -36,7 +36,7 @@ public class Upload extends HttpServlet{
         if(isBlank(filename)){
             return null;
         }
-        return "a";
+        return filename;
     }
     public static boolean isBlank(String str){
         int strlen = str.length();
