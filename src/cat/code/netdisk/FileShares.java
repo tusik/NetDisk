@@ -29,6 +29,9 @@ public class FileShares extends HttpServlet{
     }
     public void doPost(HttpServletRequest request,HttpServletResponse response) throws IOException {
         IsLogin il=new IsLogin();
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding( "utf-8" );
+        response.setContentType("charset=utf-8");
         HttpSession session = request.getSession();
         String del = request.getParameter("del");
         int login=il.isLogin(session,request,response);
@@ -36,21 +39,23 @@ public class FileShares extends HttpServlet{
             username = request.getParameter("user");
             path = request.getParameter("path");
             if(del!=null){
+                response.getWriter().write(del);
                 if(del.equals("1")) {
                     String id = request.getParameter("id");
                     canelShare(id);
                 }
             } else {
-                fileShare();
+                fileShare(response);
             }
 
-            response.sendRedirect(request.getHeader("Referer"));
+            //response.sendRedirect(request.getHeader("Referer"));
         }else {
-            response.sendRedirect(request.getHeader("/"));
+            response.getWriter().write(login);
+            //response.sendRedirect(request.getHeader("/"));
 
         }
     }
-    public void fileShare()
+    public void fileShare(HttpServletResponse response)
             throws IOException {
         MySql db = new MySql();
         String id= RandomStringUtils.randomAlphanumeric(6);
@@ -76,9 +81,10 @@ public class FileShares extends HttpServlet{
                         id+"','"+path+"','"+username+"')";
                 db.insert(sql);
                 db.pst.executeUpdate();
+                response.getWriter().write(path);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            response.getWriter().write(e.toString());
         }finally {
             db.close();
         }

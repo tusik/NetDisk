@@ -9,7 +9,8 @@ import java.sql.*;
  */
 public class MySql {
     ConfigLoader CL = new ConfigLoader();
-    public final String url = "jdbc:mysql://localhost/" + CL.GetValueByKey("dbname");
+    public final String url = "jdbc:mysql://localhost/" +
+            CL.GetValueByKey("dbname")+"?useUnicode=true&characterEncoding=utf-8";
     public final String name = "com.mysql.jdbc.Driver";
     public final String user = CL.GetValueByKey("dbuser");
     public final String password = CL.GetValueByKey("dbpw");

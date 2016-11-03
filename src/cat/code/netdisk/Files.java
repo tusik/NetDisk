@@ -61,7 +61,7 @@ public class Files extends HttpServlet {
             response.reset();
             response.setContentType("bin");
             response.addHeader( "Content-Disposition" , "attachment; filename=\"" +fileName+ "\"");
-        }else {
+        }else if(view==1){
             response.reset();
             response.setContentType("");
         }
