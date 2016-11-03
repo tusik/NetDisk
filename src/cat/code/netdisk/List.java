@@ -23,6 +23,9 @@ public class List extends HttpServlet{
     }
     public void setList(HttpServletRequest request,HttpServletResponse response,String dir)
             throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding( "utf-8" );
+        response.setContentType("charset=utf-8");
         HttpSession session = request.getSession();
         String username= (String) session.getAttribute("username");
         String filedir=this.getClass().getClassLoader().getResource("../../WEB-INF/files/"

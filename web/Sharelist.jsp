@@ -17,6 +17,7 @@
     <%if(session.getAttribute("login").equals("true")){%>
         <div class="layer1">
             <div class="listlayer">
+                <p class="dir"></p>
                 <%
                     ArrayList codelist =(ArrayList) request.getAttribute("codelist");
                     ArrayList namelist =(ArrayList) request.getAttribute("namelist");
@@ -25,6 +26,7 @@
                                 "<a class=\"del\" href=\"/Share?id="+codelist.get(i)+"&del=1\">Canel Sharing</a><br/>");
                     }
                 %>
+                </p>
                 <a href="/">Panel</a><br/>
                 <a href="/Logout">Logout</a>
             </div>

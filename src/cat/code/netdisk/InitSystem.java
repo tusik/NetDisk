@@ -47,7 +47,8 @@ public class InitSystem extends HttpServlet{
         regopen=request.getParameterValues("reg");
 
         if(adminpw1.equals(adminpw)){
-            if(configSetting(dbname,dbuser,dbpw,adminname,salt,size)){
+            String c=configSetting(dbname,dbuser,dbpw,adminname,salt,size);
+            if(c.equals("1")){
                 adminpw=DigestUtils.sha256Hex(adminpw+salt);
                 if(!createDatabase())response.getWriter().write("database creating error");
                 createAdmin(adminname,adminpw);
@@ -57,9 +58,14 @@ public class InitSystem extends HttpServlet{
                 oldfile.renameTo(newfile);
                 createFileDir(adminname);
                 response.sendRedirect("/");
-            }else {
+            }else if(c.equals("2")){
                 PrintWriter out= response.getWriter();
                 out.print("Initialization failed,please check does config file exist");
+                out.flush();
+                out.close();
+            }else {
+                PrintWriter out= response.getWriter();
+                out.print(c);
                 out.flush();
                 out.close();
             }
@@ -72,7 +78,7 @@ public class InitSystem extends HttpServlet{
                 "WEB-INF/files/"+username);
         filedir.mkdirs();
     }
-    public boolean configSetting(String dbname,String dbuser,String dbpw,
+    public String configSetting(String dbname,String dbuser,String dbpw,
                                  String adminname, String salt,String size){
         try {
             String content = "dbname="+dbname+
@@ -95,13 +101,13 @@ public class InitSystem extends HttpServlet{
                 BufferedWriter bw = new BufferedWriter(fw);
                 bw.write(content);
                 bw.close();
-                return true;
+                return "1";
             }else{
-                return false;
+                return "2";
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return e.toString();
         }
     }
 

@@ -1,7 +1,5 @@
 package cat.code.netdisk;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import javax.servlet.http.*;
 
 

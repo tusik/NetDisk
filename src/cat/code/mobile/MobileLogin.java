@@ -45,12 +45,12 @@ public class MobileLogin extends HttpServlet{
             ResultSet rs=db.pst.executeQuery();
             if(rs.next()){
                 jsondata="{\"login\":\"true\",\"username\":\""+username+
-                        "\",\"token\":\""+token.countToken(username,password)+"\"}";
+                        "\",\"token\":\""+ token.countToken(username,password)+"\"}";
                 response.getWriter().write(jsondata);
             }else {
                 username=null;
                 jsondata="{\"login\":\"false\",\"username\":"+username+
-                        ",\"token\":"+token.countToken(username,password)+"}";
+                        ",\"token\":"+ token.countToken(username,password)+"}";
                 response.getWriter().write(jsondata);
             }
         } catch (SQLException e) {

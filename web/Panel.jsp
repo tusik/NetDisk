@@ -1,5 +1,7 @@
 
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="java.util.regex.Matcher" %>
 <%--
   Created by IntelliJ IDEA.
   User: zinc
@@ -46,20 +48,36 @@
                     }
                     if(filelist!=null){
                         for(int i=0;i<filelist.size();i++){
-                            out.print("<p class=\"dir\"><a href=\"/GetFiles/"+session.getAttribute("username")
-                                    +dir+"/"+filelist.get(i)+"\">"
-                                    +filelist.get(i)+"</a><a class=\"del\" href=\"Delete?path="
-                                    +dir+"/"+filelist.get(i)+"\">|del</a><a class=\"del\" href=\"Share?path="
-                                    + dir + "/" + filelist.get(i) + "&user="+session.getAttribute("username")
-                                    +"\">|Share</a></p>");
+                            String context="<p class=\"dir\"><a href=\"/GetFiles/"+session.getAttribute("username")
+                                    +dir+"/"+filelist.get(i)+"\">" +filelist.get(i)+"</a>" +
+                                    "<a class=\"del\" href=\"Delete?path=" +dir+"/"+filelist.get(i)+"\">|del</a>" +
+                                    "<a class=\"del\" href=\"Share?path=" + dir + "/" + filelist.get(i) +
+                                    "&user="+session.getAttribute("username") +"\">|Share</a>" ;
+                            String pattern = "((.*)(.jpg)(.*)|(.*)(.png)(.*)|(.*)(.gif)(.*)|(.*)(.jpeg)(.*)|" +
+                                    "(.*)(.bmp)(.*)|(.*)(.ico)(.*))";
+                            //创建Pattern对象
+                            Pattern r = Pattern.compile(pattern);
+                            //创建matcher对象
+                            Matcher m = r.matcher(filelist.get(i));
+                            if(m.find())
+                                context+="<a class=\"del\" href=\"/view/"+session.getAttribute("username") +
+                                    dir+"/"+filelist.get(i)+ "\">|VIEW</a></p>";
+                            out.print(context);
                         }
                     }
                 }else {
                     out.print("null");
                 }
             %>
+            <form enctype="multipart/form-data"  action="/UploadServlet?dir=<%if(request.getParameter("dir")!=null)
+                out.print(request.getParameter("dir"));%>" method="post" class="newdir">
+                <input class="pinput" type="file" id="myFile" name="myFile"/><br/>
+                <div id="filen"></div>
+                <input class="pinput" type="submit" value="upload"><br/>
+            </form>
             <form action="/CreateDir" method="post" class="newdir">
-                <input class="pinput" type="text" id="dname" name="dname" value="<%=request.getParameter("dir")%>/"/><br/>
+                <input class="pinput" type="text" id="dname" name="dname"
+                       value="<%if(request.getParameter("dir")!=null)out.print(request.getParameter("dir"));%>/"/><br/>
                 <input class="pinput" type="submit" value="Create Dir"><br/>
             </form>
             <a href="/Panel?dir=/<%=predir%>">..</a><br/>
@@ -71,5 +89,15 @@
 
     <%}%>
 </div>
+<script type="text/javascript">
+
+    document.getElementById("myFile").addEventListener("change", function(){
+        var name=this.value;
+        var filename=name.substring(name.lastIndexOf("\\")+1).toLowerCase();
+        var insertText = "<input type=\"text\" id=\"filename\" name=\"filename\" value=\""+filename+"\" hidden=\"hidden\" />";
+        document.getElementById("filen").innerHTML=insertText;
+        //alert(filename);
+    });
+</script>
 </body>
 </html>

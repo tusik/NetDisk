@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * @author Image
  */
 @WebServlet(name="token",urlPatterns = "/token")
-public class token{
+public class token {
     String token=null;
     String username=null;
     String checktoken=null;
@@ -64,5 +64,11 @@ public class token{
     }
     public String sessionToken(){
         return token;
+    }
+    public String countToken(String user,String password){
+        if(user==null||password==null)return null;
+        ConfigLoader CL=new ConfigLoader();
+        String enpw=DigestUtils.sha256Hex(password+CL.GetValueByKey("salt"));
+        return DigestUtils.sha1Hex(user + enpw);
     }
 }

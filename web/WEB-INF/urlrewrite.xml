@@ -4,6 +4,10 @@
         <to >/GetFiles?url=$1</to>
     </rule>
     <rule>
+        <from>/view/(.*)</from>
+        <to >/GetFiles?view=1&amp;url=$1</to>
+    </rule>
+    <rule>
         <from>/Share/(.*)/(.*)</from>
         <to >/Share?user=$1&amp;id=$2</to>
     </rule>
