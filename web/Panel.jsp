@@ -37,14 +37,17 @@
             <%
                 ArrayList<String> dirlist=(ArrayList) request.getAttribute("dirlist");
                 ArrayList<String> filelist=(ArrayList) request.getAttribute("filelist");
-                if(dirlist !=null ){
+                if(dirlist !=null &&filelist!=null){
                     String dir=request.getParameter("dir");
                     if(dir==null)dir="";
-                    for(int i=0;i<dirlist.size();i++){
+                    if(dirlist!=null){
 
-                        out.print("<p class=\"dir\"><a href=\"/Panel?dir="+dir+"/"
-                                +dirlist.get(i)+"\">"+dirlist.get(i)+"</a><a class=\"del\" href=\"Delete?path="
-                                + request.getParameter("dir") + dirlist.get(i) + "\">del</a></p>");
+                        for(int i=0;i<dirlist.size();i++){
+                            String context="<p class=\"dir\"><a href=\"/Panel?dir="+dir+"/"
+                                    +dirlist.get(i)+"\">"+dirlist.get(i)+"</a><a class=\"del\" href=\"Delete?path="
+                                    +dir+"/"+dirlist.get(i) + "\">del</a></p>";
+                            out.print(context);
+                        }
                     }
                     if(filelist!=null){
                         for(int i=0;i<filelist.size();i++){

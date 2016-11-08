@@ -18,6 +18,7 @@ import java.io.IOException;
 @WebServlet(name = "Delete",urlPatterns = "/Delete")
 public class Delete extends HttpServlet{
     ConfigLoader CL = new ConfigLoader();
+
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         doPost(request,response);
@@ -28,9 +29,22 @@ public class Delete extends HttpServlet{
         HttpSession session = request.getSession();
         File file = new File(CL.GetValueByKey("basepath")+
                 "WEB-INF/files/"+session.getAttribute("username")+"/"+path);
-        if(file.exists()){
-            file.delete();
+        deleteAllFilesOfDir(file);
+        response.sendRedirect(request.getHeader("Referer"));
+        //response.getWriter().write(path);
+    }
+
+    public void deleteAllFilesOfDir(File path) {
+        if (!path.exists())
+            return;
+        if (path.isFile()) {
+            path.delete();
+            return;
         }
-        response.sendRedirect("/");
+        File[] files = path.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            deleteAllFilesOfDir(files[i]);
+        }
+        path.delete();
     }
 }
