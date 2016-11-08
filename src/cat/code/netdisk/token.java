@@ -21,8 +21,9 @@ public class token {
     public String getToken(HttpServletRequest request, HttpServletResponse response){
         Cookie cookie = null;
         Cookie[] cookies = null;
-        cookies = request.getCookies();
-        if (cookies.length<1)return "false";
+
+        if((cookies = request.getCookies())==null){return "false";}
+        else if (cookies.length<1){return "false";}
         for(int i=0;i<cookies.length;i++){
             cookie=cookies[i];
             if(cookie.getName().equals("token")){
