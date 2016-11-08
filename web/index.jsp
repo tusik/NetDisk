@@ -23,10 +23,12 @@
 
 <div class="login">
     <h1>Login</h1>
-    <form method="post" action="/Login">
+    <form method="post" onsubmit="return submitbtn_click()">
+
         <input type="text" name="username" id="username" placeholder="Username" required="required" />
         <input type="password" name="pw" id="pw" placeholder="Password" required="required" />
-        <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
+        <button type="submit" onclick="sendurl()" class="btn btn-primary btn-block btn-large">Let me in.</button>
+        <h4 id="info"></h4>
     </form>
 </div>
 

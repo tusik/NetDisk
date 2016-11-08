@@ -46,9 +46,11 @@ public class Login extends HttpServlet{
                 session.setAttribute("login","true");
                 session.setAttribute("username",username);
                 session.setAttribute("token",token);
-                response.sendRedirect("/");
+                response.getWriter().write("success");
+                //response.sendRedirect("/");
             }else {
-                response.sendRedirect("/");
+                response.getWriter().write("false");
+                //response.sendRedirect("/");
             }
         } catch (SQLException e) {
             e.printStackTrace();
