@@ -32,6 +32,7 @@ public class Panel extends HttpServlet{
             RequestDispatcher dispatcher = request.getRequestDispatcher("/Panel.jsp");
             dispatcher.forward(request, response);
         }else{
+            response.setCharacterEncoding("UTF-8");
             response.setHeader("Content-type", "text/html;charset=UTF-8");
             response.getWriter().write(" <script type=\"text/javascript\" >alert(\"Login first\");</script>\n");
             response.sendRedirect("/");
