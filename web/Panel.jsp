@@ -33,6 +33,7 @@
 
     %>
     <div class="layer1">
+        <%=session.getAttribute("diskused")%>/<%=session.getAttribute("maxdisk")%>
         <div class="listlayer">
             <%
                 ArrayList<String> dirlist=(ArrayList) request.getAttribute("dirlist");

@@ -46,6 +46,14 @@ public class Login extends HttpServlet{
                 session.setAttribute("login","true");
                 session.setAttribute("username",username);
                 session.setAttribute("token",token);
+                String get_maxdisk = "SELECT maxdisk from files,user where username='"
+                        +username+"'";
+                db.insert(get_maxdisk);
+                ResultSet rs1= db.pst.executeQuery();
+                if(rs1.next()){
+                    session.setAttribute("maxdisk",rs1.getDouble("maxdisk"));
+                }
+
                 response.getWriter().write("success");
                 //response.sendRedirect("/");
             }else {

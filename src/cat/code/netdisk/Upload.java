@@ -7,6 +7,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Created by zinc on 2016/10/21.
@@ -41,8 +42,21 @@ public class Upload extends HttpServlet{
                     session.getAttribute("username")+
                     "/"+dir+filename;
             part.write(path);
+            setUsed(part.getSize()/1024.0/1024.0, (String) session.getAttribute("username"));
+
         }
         response.sendRedirect(request.getHeader("Referer"));
+    }
+    public void setUsed(double size,String username){
+        MySql db = new MySql();
+        String sql = "UPDATE files,user set filecount=filecount+1,diskused=diskused+"
+                +size+" where username='"+username+"'";
+        db.insert(sql);
+        try {
+            db.pst.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

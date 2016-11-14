@@ -1,6 +1,8 @@
 package cat.code.netdisk;
 
 import javax.servlet.http.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 /**
@@ -22,17 +24,35 @@ public class IsLogin {
 
             if(tokenValuable.equals("true")){
                 t.setSession(session);
+                session.setAttribute("diskused",getUsed(session));
                 return 1;
             }else {
                 return 2;
             }
         }else {
             if(token.equals(t.cookieToken())){
+                session.setAttribute("diskused",getUsed(session));
                 return 3;
             }else {
                 return 4;
             }
         }
     }
-
+    public double getUsed(HttpSession session){
+        MySql db = new MySql();
+        String sql = "SELECT diskused from files,user where username='"
+                +session.getAttribute("username")+"'";
+        db.insert(sql);
+        try {
+            ResultSet rs = db.pst.executeQuery();
+            if(rs.next()){
+                return rs.getDouble("diskused");
+            }else {
+                return 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

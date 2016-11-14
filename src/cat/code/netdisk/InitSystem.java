@@ -112,6 +112,7 @@ public class InitSystem extends HttpServlet{
     }
 
     public boolean createDatabase(){
+        ConfigLoader CL= new ConfigLoader();
         MySql db=new MySql();
         String sql="CREATE TABLE `user`(" +
                 "`id` int NOT NULL AUTO_INCREMENT," +
@@ -125,7 +126,7 @@ public class InitSystem extends HttpServlet{
                 "`id` int NOT NULL AUTO_INCREMENT,"+
                 "`filecount` int(11) NOT NULL DEFAULT '0' ,"+
                 "`diskused` decimal(8,2) NOT NULL DEFAULT '0.0',"+
-                "`maxdisk` decimal(8,2) NOT NULL DEFAULT '"+size+"',"+
+                "`maxdisk` decimal(8,2) NOT NULL DEFAULT '"+ CL.GetValueByKey("size")+"',"+
                 "PRIMARY KEY (`id`))";
         String sql2= "CREATE TABLE `share`(" +
                 "`id` int(11) NOT NULL AUTO_INCREMENT,"+
@@ -158,7 +159,7 @@ public class InitSystem extends HttpServlet{
                 " VALUES" +
                 "('"+adminname+"','"+pw+"','0');";
         String sql1=
-                "INSERT INTO `files` (maxdisk) VALUES(2048.0)";
+                "INSERT INTO `files` (maxdisk) VALUES('"+ size+"')";
         db.insert(sql);
         try {
             db.pst.executeUpdate();
