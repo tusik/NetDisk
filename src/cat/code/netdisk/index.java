@@ -29,7 +29,7 @@ public class Index extends HttpServlet{
             HttpSession session = request.getSession(true);
             IsLogin il=new IsLogin();
             int login=il.isLogin(session,request,response);
-            if(login==1){
+            if(login==1||login==3){
                 response.sendRedirect("/Panel");
             }else {
                 response.sendRedirect("index.jsp");

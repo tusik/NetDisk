@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Created by zinc on 2016/10/27.
@@ -18,7 +19,8 @@ import java.io.IOException;
 @WebServlet(name = "Delete",urlPatterns = "/Delete")
 public class Delete extends HttpServlet{
     ConfigLoader CL = new ConfigLoader();
-
+    String username;
+    long sss;
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         doPost(request,response);
@@ -27,9 +29,11 @@ public class Delete extends HttpServlet{
             throws IOException {
         String path = request.getParameter("path");
         HttpSession session = request.getSession();
+        username = (String) session.getAttribute("username");
         File file = new File(CL.GetValueByKey("basepath")+
-                "WEB-INF/files/"+session.getAttribute("username")+"/"+path);
+                "WEB-INF/files/"+username+"/"+path);
         deleteAllFilesOfDir(file);
+        //response.getWriter().write(String.valueOf(sss));
         response.sendRedirect(request.getHeader("Referer"));
         //response.getWriter().write(path);
     }
@@ -38,7 +42,10 @@ public class Delete extends HttpServlet{
         if (!path.exists())
             return;
         if (path.isFile()) {
+            sss=path.length();
+            releaseDisk(path.length()/1024.0/1024.0,username);
             path.delete();
+
             return;
         }
         File[] files = path.listFiles();
@@ -46,5 +53,16 @@ public class Delete extends HttpServlet{
             deleteAllFilesOfDir(files[i]);
         }
         path.delete();
+    }
+    public void releaseDisk(double size,String username){
+        MySql db = new MySql();
+        String sql = "UPDATE files,user set filecount=filecount-1,diskused=diskused-"
+                +size+" where username='"+username+"'";
+        db.insert(sql);
+        try {
+            db.pst.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -7,6 +7,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -41,11 +42,19 @@ public class Upload extends HttpServlet{
             String path=CL.GetValueByKey("basepath")+"WEB-INF/files/"+
                     session.getAttribute("username")+
                     "/"+dir+filename;
-            part.write(path);
-            setUsed(part.getSize()/1024.0/1024.0, (String) session.getAttribute("username"));
+            if(chechDisk(part.getSize()/1024.0/1024.0,
+                    (String) session.getAttribute("username"))==1){
+                part.write(path);
+                setUsed(part.getSize()/1024.0/1024.0,
+                        (String) session.getAttribute("username"));
+                response.sendRedirect(request.getHeader("Referer"));
+            }else {
+                response.getWriter().write(Integer.toString(chechDisk(part.getSize()/1024.0/1024.0,
+                        (String) session.getAttribute("username"))));
+            }
 
         }
-        response.sendRedirect(request.getHeader("Referer"));
+        //response.sendRedirect(request.getHeader("Referer"));
     }
     public void setUsed(double size,String username){
         MySql db = new MySql();
@@ -56,6 +65,26 @@ public class Upload extends HttpServlet{
             db.pst.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    public int chechDisk(double size,String username){
+        MySql db = new MySql();
+        String sql = "SELECT diskused,maxdisk from files,user where username='"+username+"'";
+        db.insert(sql);
+        try {
+            ResultSet rs =db.pst.executeQuery();
+            if(rs.next()){
+                if(size+rs.getDouble("diskused")>rs.getDouble("maxdisk")){
+                    return -1;
+                }else {
+                    return 1;
+                }
+            }else {
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 999;
         }
     }
 

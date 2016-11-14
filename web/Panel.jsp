@@ -22,6 +22,10 @@
 <div class="main">
     <%if(session.getAttribute("login").equals("true")){%>
     <%
+        String error=request.getParameter("error");
+        if(error!=null){
+            if(error.equals("out")){out.print("<script>alert(\"out of max disk usage\")</script>");}
+        }
         String predir=request.getParameter("dir");
         if(predir!=null){
             String tmp[]=predir.split("/");
