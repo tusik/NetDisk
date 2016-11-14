@@ -19,7 +19,7 @@ function sendurl() //主程序函数
     var pw = document.getElementById("pw").value;
     var parm = "username=" + username + "&pw="
         + pw ;//构造URL参数
-    alert(parm);
+    //alert(parm);
     xmlhttp.open("POST", "/Login", true); //调用
     xmlhttp.setRequestHeader("cache-control","no-cache");
     xmlhttp.setRequestHeader("contentType","text/html;charset=uft-8") //指定发送的编码

@@ -88,7 +88,7 @@ public class InitSystem extends HttpServlet{
                     "\nsalt="+salt+
                     "\nsize="+size+
                     "\nbasepath="+getServletContext().getRealPath("/");
-            if(regopen[0]!=null){
+            if(regopen!=null){
                 content+="\nregopen=true";
             }else {
                 content+="\nregopen=false";

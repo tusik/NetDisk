@@ -1,6 +1,9 @@
 ##java网盘程序
 
 ### 上传后按提示操作
+需要
+- commons-lang3-3.4.jar
+- commons-codec-1.10.jar
 
 ## 更新日志
 
