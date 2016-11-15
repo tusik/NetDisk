@@ -83,6 +83,7 @@ public class Files extends HttpServlet {
         MySql db = new MySql();
         String sql = "SELECT path,username FROM `share` WHERE code='"+id+"'";
         db.insert(sql);
+
         try {
             ResultSet rs =db.pst.executeQuery();
             if(rs.next()){
@@ -90,14 +91,18 @@ public class Files extends HttpServlet {
                 username=rs.getString("username");
                 filedir=CL.GetValueByKey("basepath")+"WEB-INF/files/"
                         +username+path;
-
             }
             File file = new File(filedir);
             String s[]=path.split("/");
 
-            if(file.exists()){
-                //下载文件
 
+            if(file.exists()){
+                sql="UPDATE share set downcount=downcount+1 WHERE code=?";
+                MySql db1 = new MySql();
+                db1.insert(sql,id);
+                db1.pst.execute();
+                db1.close();
+                //下载文件
                 downloadLocal(request,response,filedir,s[s.length-1]);
 
             }else {
