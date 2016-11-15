@@ -22,8 +22,10 @@
                     ArrayList codelist =(ArrayList) request.getAttribute("codelist");
                     ArrayList namelist =(ArrayList) request.getAttribute("namelist");
                     for(int i=0;i<codelist.size();i++){
-                        out.print("<a href=\"/GetFiles?id="+codelist.get(i)+"\">"+namelist.get(i)+"</a>" +
-                                "<a class=\"del\" href=\"/Share?id="+codelist.get(i)+"&del=1\">Canel Sharing</a><br/>");
+                        out.print("<a href=\"/Share/"+session.getAttribute("username")
+                                +"/"+codelist.get(i)+"\">"+namelist.get(i)+"</a>" +
+                                "<a class=\"del\" href=\"/Share?id="+codelist.get(i)
+                                +"&del=1\">Canel Sharing</a><br/>");
                     }
                 %>
                 </p>

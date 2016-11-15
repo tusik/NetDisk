@@ -31,6 +31,29 @@ public class MySql {
             e.printStackTrace();
         }
     }
+    public void insert(String sql,String[] vals) {
+        try {
+            Class.forName(name);//指定连接类型
+            conn = DriverManager.getConnection(url, user, password);//获取连接
+            pst = conn.prepareStatement(sql);//准备执行语句
+            for(int i=1;i<=vals.length;i++){
+                pst.setString(i,vals[i]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void insert(String sql,String val) {
+        try {
+            Class.forName(name);//指定连接类型
+            conn = DriverManager.getConnection(url, user, password);//获取连接
+            pst = conn.prepareStatement(sql);//准备执行语句
+            pst.setString(1,val);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void close() {
         try {

@@ -44,6 +44,7 @@ public class Files extends HttpServlet {
         path = null;
 
         if(url==null&&id!=null){
+            //分享文件下载
             getShareFile(request,response);
         }else {
            getUserFile(request,response);
@@ -64,8 +65,8 @@ public class Files extends HttpServlet {
         }else if(view==1){
             response.reset();
             response.setContentType("");
-        }
 
+        }
         //循环取出流中的数据
         byte[] b = new byte[100];
         int len;
@@ -80,7 +81,6 @@ public class Files extends HttpServlet {
     public void getShareFile(HttpServletRequest request,HttpServletResponse response)
             throws IOException, ServletException {
         MySql db = new MySql();
-        ArrayList list = new ArrayList();
         String sql = "SELECT path,username FROM `share` WHERE code='"+id+"'";
         db.insert(sql);
         try {
@@ -90,17 +90,20 @@ public class Files extends HttpServlet {
                 username=rs.getString("username");
                 filedir=CL.GetValueByKey("basepath")+"WEB-INF/files/"
                         +username+path;
+
             }
             File file = new File(filedir);
             String s[]=path.split("/");
+
             if(file.exists()){
                 //下载文件
+
                 downloadLocal(request,response,filedir,s[s.length-1]);
+
             }else {
                 response.setStatus(404);
                 response.sendRedirect("/WEB-INF/404.jsp");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {

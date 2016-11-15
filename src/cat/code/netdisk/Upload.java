@@ -33,29 +33,28 @@ public class Upload extends HttpServlet{
         String dir=request.getParameter("dir");
         HttpSession session=request.getSession();
         Part part = request.getPart("myFile");
-        String filename = java.net.URLDecoder.decode((String)request.getParameter("filename"), "UTF-8");;
-        byte[] str = StringEscapeUtils.unescapeHtml3(filename).getBytes();
-        //filename = str.toString();
+        String filename =request.getParameter("filename");
         if(filename!=null){
             if(dir!=null)dir+="/";
             else dir="";
             String path=CL.GetValueByKey("basepath")+"WEB-INF/files/"+
                     session.getAttribute("username")+
                     "/"+dir+filename;
-            if(chechDisk(part.getSize()/1024.0/1024.0,
+            if(chechUsed(part.getSize()/1024.0/1024.0,
                     (String) session.getAttribute("username"))==1){
                 part.write(path);
                 setUsed(part.getSize()/1024.0/1024.0,
                         (String) session.getAttribute("username"));
                 response.sendRedirect(request.getHeader("Referer"));
             }else {
-                response.getWriter().write(Integer.toString(chechDisk(part.getSize()/1024.0/1024.0,
-                        (String) session.getAttribute("username"))));
+                response.sendRedirect(request.getHeader("Referer")+"?error=out");
             }
 
+        }else {
+            response.sendRedirect(request.getHeader("Referer")+"?error=empty");
         }
-        //response.sendRedirect(request.getHeader("Referer"));
     }
+    //增加使用量
     public void setUsed(double size,String username){
         MySql db = new MySql();
         String sql = "UPDATE files,user set filecount=filecount+1,diskused=diskused+"
@@ -67,7 +66,8 @@ public class Upload extends HttpServlet{
             e.printStackTrace();
         }
     }
-    public int chechDisk(double size,String username){
+    //检查使用量
+    public int chechUsed(double size,String username){
         MySql db = new MySql();
         String sql = "SELECT diskused,maxdisk from files,user where username='"+username+"'";
         db.insert(sql);

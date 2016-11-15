@@ -20,7 +20,7 @@
 <body>
 
 <div class="main">
-    <%if(session.getAttribute("login").equals("true")){%>
+    <%if(session.getAttribute("login").equals("true")){//判断登陆状态%>
     <%
         String error=request.getParameter("error");
         if(error!=null){
@@ -34,19 +34,19 @@
         }else {
             predir="";
         }
-
     %>
     <div class="layer1">
         <%=session.getAttribute("diskused")%>/<%=session.getAttribute("maxdisk")%>
         <div class="listlayer">
             <%
+                //获取文件和目录列表
                 ArrayList<String> dirlist=(ArrayList) request.getAttribute("dirlist");
                 ArrayList<String> filelist=(ArrayList) request.getAttribute("filelist");
                 if(dirlist !=null &&filelist!=null){
-                    String dir=request.getParameter("dir");
+                    String dir=request.getParameter("dir");//获取当前目录
                     if(dir==null)dir="";
+                    //目录列表输出
                     if(dirlist!=null){
-
                         for(int i=0;i<dirlist.size();i++){
                             String context="<p class=\"dir\"><a href=\"/Panel?dir="+dir+"/"
                                     +dirlist.get(i)+"\">"+dirlist.get(i)+"</a><a class=\"del\" href=\"Delete?path="
@@ -54,6 +54,7 @@
                             out.print(context);
                         }
                     }
+                    //文件列表输出
                     if(filelist!=null){
                         for(int i=0;i<filelist.size();i++){
                             String context="<p class=\"dir\"><a href=\"/GetFiles/"+session.getAttribute("username")
@@ -63,11 +64,9 @@
                                     "&user="+session.getAttribute("username") +"\">|Share</a>" ;
                             String pattern = "((.*)(.jpg)(.*)|(.*)(.png)(.*)|(.*)(.gif)(.*)|(.*)(.jpeg)(.*)|" +
                                     "(.*)(.bmp)(.*)|(.*)(.ico)(.*))";
-                            //创建Pattern对象
                             Pattern r = Pattern.compile(pattern);
-                            //创建matcher对象
                             Matcher m = r.matcher(filelist.get(i));
-                            if(m.find())
+                            if(m.find())//判断为图像文件则提供直接浏览
                                 context+="<a class=\"del\" href=\"/view/"+session.getAttribute("username") +
                                     dir+"/"+filelist.get(i)+ "\">|VIEW</a></p>";
                             out.print(context);
@@ -98,7 +97,6 @@
     <%}%>
 </div>
 <script type="text/javascript">
-
     document.getElementById("myFile").addEventListener("change", function(){
         var name=this.value;
         var filename=name.substring(name.lastIndexOf("\\")+1).toLowerCase();

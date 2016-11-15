@@ -48,10 +48,10 @@ public class FileShares extends HttpServlet{
                 fileShare(response);
             }
 
-            //response.sendRedirect(request.getHeader("Referer"));
+            response.sendRedirect(request.getHeader("Referer"));
         }else {
-            response.getWriter().write(login);
-            //response.sendRedirect(request.getHeader("/"));
+            //response.getWriter().write(login);
+            response.sendRedirect(request.getHeader("/"));
 
         }
     }
@@ -81,7 +81,7 @@ public class FileShares extends HttpServlet{
                         id+"','"+path+"','"+username+"')";
                 db.insert(sql);
                 db.pst.executeUpdate();
-                response.getWriter().write(path);
+                //response.getWriter().write(path);
             }
         } catch (SQLException e) {
             response.getWriter().write(e.toString());
