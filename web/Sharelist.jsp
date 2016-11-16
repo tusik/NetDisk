@@ -36,6 +36,8 @@
     <%}else{%>
 
     <%}%>
+    <%if(session.getAttribute("DEBUG").equals(1))%>
+    <jsp:include page="WEB-INF/DEBUG.jsp"></jsp:include>
 </div>
 </body>
 </html>

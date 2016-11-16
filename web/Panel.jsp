@@ -95,6 +95,8 @@
     <%}else{%>
 
     <%}%>
+    <%if(session.getAttribute("DEBUG").equals(1))%>
+    <jsp:include page="WEB-INF/DEBUG.jsp"></jsp:include>
 </div>
 <script type="text/javascript">
     document.getElementById("myFile").addEventListener("change", function(){
@@ -106,4 +108,5 @@
     });
 </script>
 </body>
+
 </html>

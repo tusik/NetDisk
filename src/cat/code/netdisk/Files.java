@@ -98,8 +98,7 @@ public class Files extends HttpServlet {
 
             if(file.exists()){
                 sql="UPDATE share set downcount=downcount+1 WHERE code=?";
-                MySql db1 = new MySql();
-                db1.insert(sql,id);
+                MySql db1 = new MySql(sql,id);
                 db1.pst.execute();
                 db1.close();
                 //下载文件

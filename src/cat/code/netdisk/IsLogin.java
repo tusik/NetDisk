@@ -24,35 +24,45 @@ public class IsLogin {
 
             if(tokenValuable.equals("true")){
                 t.setSession(session);
-                session.setAttribute("diskused",getUsed(session));
+                setUsed(session);
+                setDebug(session);
                 return 1;
             }else {
                 return 2;
             }
         }else {
             if(token.equals(t.cookieToken())){
-                session.setAttribute("diskused",getUsed(session));
+                setUsed(session);
+                setDebug(session);
                 return 3;
             }else {
                 return 4;
             }
         }
     }
-    public double getUsed(HttpSession session){
+    public void setUsed(HttpSession session){
         MySql db = new MySql();
-        String sql = "SELECT diskused from files,user where username='"
+        String sql = "SELECT diskused,maxdisk from files,user where username='"
                 +session.getAttribute("username")+"'";
         db.insert(sql);
         try {
             ResultSet rs = db.pst.executeQuery();
             if(rs.next()){
-                return rs.getDouble("diskused");
+                session.setAttribute("maxdisk",rs.getDouble("maxdisk"));
+                session.setAttribute("diskused",rs.getDouble("diskused"));
             }else {
-                return 0;
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+
+        }
+    }
+    public void setDebug(HttpSession session){
+        ConfigLoader CL = new ConfigLoader();
+        int DEBUG = Integer.parseInt(CL.GetValueByKey("DEBUG"));
+        if(DEBUG==1){
+            session.setAttribute("DEBUG",1);
         }
     }
 }

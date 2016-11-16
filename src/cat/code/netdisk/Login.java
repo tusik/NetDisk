@@ -36,12 +36,10 @@ public class Login extends HttpServlet{
         try {
             ResultSet rs =db.pst.executeQuery();
             if(rs.next()){
+                //设置cookie 和 session
                 Cookie un = new Cookie("username",username);
                 Cookie token = new Cookie("token",DigestUtils.sha1Hex(username+password));
-                un.setMaxAge(60*60*48);
-                token.setMaxAge(60*60*48);
-                response.addCookie(un);
-                response.addCookie(token);
+                Cookie maxdisk = null;
                 HttpSession session = request.getSession(true);
                 session.setAttribute("login","true");
                 session.setAttribute("username",username);
@@ -52,8 +50,14 @@ public class Login extends HttpServlet{
                 ResultSet rs1= db.pst.executeQuery();
                 if(rs1.next()){
                     session.setAttribute("maxdisk",rs1.getDouble("maxdisk"));
+                    maxdisk = new Cookie("maxdisk",rs1.getString("maxdisk"));
                 }
-
+                un.setMaxAge(60*60*48);
+                token.setMaxAge(60*60*48);
+                maxdisk.setMaxAge(60*60*48);
+                response.addCookie(un);
+                response.addCookie(token);
+                response.addCookie(maxdisk);
                 response.getWriter().write("success");
                 //response.sendRedirect("/");
             }else {

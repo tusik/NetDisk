@@ -18,20 +18,8 @@ public class MySql {
     public PreparedStatement pst = null;
     String sql = null;
 
-    public MySql() {
-        super();
-    }
-
-    public void insert(String sql) {
-        try {
-            Class.forName(name);//指定连接类型
-            conn = DriverManager.getConnection(url, user, password);//获取连接
-            pst = conn.prepareStatement(sql);//准备执行语句
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public void insert(String sql,String[] vals) {
+    public MySql() {}
+    public MySql(String sql,String[] vals) {
         try {
             Class.forName(name);//指定连接类型
             conn = DriverManager.getConnection(url, user, password);//获取连接
@@ -43,13 +31,23 @@ public class MySql {
             e.printStackTrace();
         }
     }
-    public void insert(String sql,String val) {
+    public MySql(String sql,String val) {
         try {
             Class.forName(name);//指定连接类型
             conn = DriverManager.getConnection(url, user, password);//获取连接
             pst = conn.prepareStatement(sql);//准备执行语句
             pst.setString(1,val);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insert(String sql) {
+        try {
+            Class.forName(name);//指定连接类型
+            conn = DriverManager.getConnection(url, user, password);//获取连接
+            pst = conn.prepareStatement(sql);//准备执行语句
         } catch (Exception e) {
             e.printStackTrace();
         }

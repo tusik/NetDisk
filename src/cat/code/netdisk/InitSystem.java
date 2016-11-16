@@ -81,7 +81,8 @@ public class InitSystem extends HttpServlet{
     public String configSetting(String dbname,String dbuser,String dbpw,
                                  String adminname, String salt,String size){
         try {
-            String content = "dbname="+dbname+
+            String content = "DEBUG=0" +
+                    "\ndbname="+dbname+
                     "\ndbuser="+dbuser+
                     "\ndbpw="+dbpw+
                     "\nadminname="+adminname+
@@ -148,8 +149,6 @@ public class InitSystem extends HttpServlet{
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        }finally {
-            db.close();
         }
     }
 
