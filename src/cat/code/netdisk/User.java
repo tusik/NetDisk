@@ -29,9 +29,8 @@ public class User extends HttpServlet{
     public int create(){
         salt=CL.GetValueByKey("salt");
         MySql db = new MySql();
-        String sql = "SELECT id FROM `user` WHERE username = '"
-                +username+"'";
-        db.insert(sql);
+        String sql = "SELECT id FROM `user` WHERE username = ?";
+        db.insert(sql,username);
         try {
             ResultSet rs = db.pst.executeQuery();
             if (rs.next()) {
@@ -39,11 +38,11 @@ public class User extends HttpServlet{
             } else {
                 sql = "INSERT INTO `user` (username,password,rank)" +
                         "VALUES" +
-                        "('" + username + "','" + DigestUtils.sha256Hex(rawpassword
-                        + salt) + "',1);";
+                        "(?,?,1);";
+                String insertUser[]={username,DigestUtils.sha256Hex(rawpassword + salt)};
                 String sql1 =
                         "INSERT INTO `files`(maxdisk)VALUES('" + CL.GetValueByKey("size") + "')";
-                db.insert(sql);
+                db.insert(sql,insertUser);
                 db.pst.execute();
                 db.insert(sql1);
                 db.pst.execute();

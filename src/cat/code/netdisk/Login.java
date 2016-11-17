@@ -28,11 +28,11 @@ public class Login extends HttpServlet{
             throws IOException {
         username=request.getParameter("username");
         password=request.getParameter("pw");
-        MySql db = new MySql();
+
         password = DigestUtils.sha256Hex(password+salt);
-        String sql="SELECT `username` FROM `user` where password='"+password
-                +"' and username='"+username+"'";
-        db.insert(sql);
+        String sql="SELECT `username` FROM `user` where password=? and username=?";
+        String vals[]={password,username};
+        MySql db = new MySql(sql,vals);
         try {
             ResultSet rs =db.pst.executeQuery();
             if(rs.next()){
@@ -41,12 +41,15 @@ public class Login extends HttpServlet{
                 Cookie token = new Cookie("token",DigestUtils.sha1Hex(username+password));
                 Cookie maxdisk = null;
                 HttpSession session = request.getSession(true);
+                int DEBUG = Integer.parseInt(CL.GetValueByKey("DEBUG"));
+                if(DEBUG==1){
+                    session.setAttribute("DEBUG",1);
+                }
                 session.setAttribute("login","true");
                 session.setAttribute("username",username);
                 session.setAttribute("token",token);
-                String get_maxdisk = "SELECT maxdisk from files,user where username='"
-                        +username+"'";
-                db.insert(get_maxdisk);
+                String get_maxdisk = "SELECT maxdisk from files,user where username=?";
+                db.insert(get_maxdisk,username);
                 ResultSet rs1= db.pst.executeQuery();
                 if(rs1.next()){
                     session.setAttribute("maxdisk",rs1.getDouble("maxdisk"));

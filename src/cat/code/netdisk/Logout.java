@@ -21,14 +21,19 @@ public class Logout extends HttpServlet{
             session.setAttribute("token",null);
             session.setAttribute("username",null);
             session.setAttribute("login","false");
+            session.setAttribute("DEBUG",null);
             Cookie cusername= new Cookie("username",null);
             Cookie ctoken= new Cookie("token",null);
+            Cookie maxdisk= new Cookie("maxdisk",null);
+            maxdisk.setMaxAge(0);
             cusername.setMaxAge(0);
             ctoken.setMaxAge(0);
+            maxdisk.setPath("/");
             cusername.setPath("/");
             ctoken.setPath("/");
             response.addCookie(ctoken);
             response.addCookie(cusername);
+            response.addCookie(maxdisk);
             response.sendRedirect("/");
         }else {
             response.sendRedirect("/");

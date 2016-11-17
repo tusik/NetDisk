@@ -57,10 +57,10 @@ public class FileShares extends HttpServlet{
     }
     public void fileShare(HttpServletResponse response)
             throws IOException {
-        MySql db = new MySql();
+
         String id= RandomStringUtils.randomAlphanumeric(6);
-        String check0 = "SELECT code FROM `share` WHERE path='"+path+"'";
-        db.insert(check0);
+        String check0 = "SELECT code FROM `share` WHERE path=?";
+        MySql db = new MySql(check0,path);
         ResultSet rs;
         try {
             rs=db.pst.executeQuery();
@@ -78,8 +78,9 @@ public class FileShares extends HttpServlet{
                     }
 
                 String sql = "INSERT INTO `share` (code,path,username)VALUES('"+
-                        id+"','"+path+"','"+username+"')";
-                db.insert(sql);
+                        id+"',?,?)";
+                String vals[]={path,username};
+                db.insert(sql,vals);
                 db.pst.executeUpdate();
                 //response.getWriter().write(path);
             }

@@ -33,9 +33,8 @@ public class token {
             }
         }
         MySql db = new MySql();
-        String sql = "SELECT `password` FROM `user` where username='"
-                +username+"'";
-        db.insert(sql);
+        String sql = "SELECT `password` FROM `user` where username=?";
+        db.insert(sql,username);
         try {
             ResultSet rs = db.pst.executeQuery();
             if (rs.next()) {

@@ -95,8 +95,9 @@
     <%}else{%>
 
     <%}%>
-    <%if(session.getAttribute("DEBUG").equals(1))%>
+    <%if(session.getAttribute("DEBUG")!=null){%>
     <jsp:include page="WEB-INF/DEBUG.jsp"></jsp:include>
+    <%}%>
 </div>
 <script type="text/javascript">
     document.getElementById("myFile").addEventListener("change", function(){

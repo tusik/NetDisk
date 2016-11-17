@@ -80,10 +80,8 @@ public class Files extends HttpServlet {
     }
     public void getShareFile(HttpServletRequest request,HttpServletResponse response)
             throws IOException, ServletException {
-        MySql db = new MySql();
-        String sql = "SELECT path,username FROM `share` WHERE code='"+id+"'";
-        db.insert(sql);
-
+        String sql = "SELECT path,username FROM `share` WHERE code=?";
+        MySql db = new MySql(sql,id);
         try {
             ResultSet rs =db.pst.executeQuery();
             if(rs.next()){
@@ -94,8 +92,6 @@ public class Files extends HttpServlet {
             }
             File file = new File(filedir);
             String s[]=path.split("/");
-
-
             if(file.exists()){
                 sql="UPDATE share set downcount=downcount+1 WHERE code=?";
                 MySql db1 = new MySql(sql,id);
