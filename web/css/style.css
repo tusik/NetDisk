@@ -73,6 +73,7 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 	height:100%;
 }
 .main .layer1{
+    padding: 10px;
 	margin:0 auto;
 	width: 80%;
 	height: 80%;
@@ -112,4 +113,13 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 	width:300px;
 	height:100px;
 	overflow:auto;
+}
+.header{
+    padding: 10px;
+}
+.header p{
+    float: left;
+}
+.header .use{
+    float: right;
 }

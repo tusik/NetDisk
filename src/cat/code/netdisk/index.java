@@ -32,7 +32,7 @@ public class Index extends HttpServlet{
             if(login==1||login==3){
                 response.sendRedirect("/Panel");
             }else {
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("Index.jsp");
             }
         }
     }

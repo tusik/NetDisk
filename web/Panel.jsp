@@ -18,7 +18,12 @@
 
 </head>
 <body>
+<div class="header">
+    <p>欢迎<%=session.getAttribute("username")%></p>
+    <p class="use"> 使用量<%=session.getAttribute("diskused")%>/<%=session.getAttribute("maxdisk")%>MB |
+    <%=session.getAttribute("filecount")%>个文件</p>
 
+</div>
 <div class="main">
     <%if(session.getAttribute("login").equals("true")){//判断登陆状态%>
     <%
@@ -36,8 +41,9 @@
         }
     %>
     <div class="layer1">
-        <%=session.getAttribute("diskused")%>/<%=session.getAttribute("maxdisk")%>
+
         <div class="listlayer">
+            <a href="/Panel?dir=/<%=predir%>">..</a><br/>
             <%
                 //获取文件和目录列表
                 ArrayList<String> dirlist=(ArrayList) request.getAttribute("dirlist");
@@ -87,7 +93,6 @@
                        value="<%if(request.getParameter("dir")!=null)out.print(request.getParameter("dir"));%>/"/><br/>
                 <input class="pinput" type="submit" value="Create Dir"><br/>
             </form>
-            <a href="/Panel?dir=/<%=predir%>">..</a><br/>
             <a href="/Sharelist">Share List</a><br/>
             <a href="/Logout">Logout</a>
         </div>

@@ -29,15 +29,28 @@ public class Delete extends HttpServlet{
     public void doPost(HttpServletRequest request,HttpServletResponse response)
             throws IOException {
         String path = request.getParameter("path");
-        HttpSession session = request.getSession();
-        username = (String) session.getAttribute("username");
-        File file = new File(base + "WEB-INF/files/"+username+"/"+path);
-        deleteAllFilesOfDir(file);
-        //response.getWriter().write(file.getPath().replaceAll(base,"%"));
-        response.sendRedirect(request.getHeader("Referer"));
-        //response.getWriter().write(path);
+        String admin = request.getParameter("admin");
+        if(admin==null){
+            HttpSession session = request.getSession();
+            username = (String) session.getAttribute("username");
+            File file = new File(base + "WEB-INF/files/"+username+"/"+path);
+            deleteAllFilesOfDir(file);
+            //response.getWriter().write(file.getPath().replaceAll(base,"%"));
+            response.sendRedirect(request.getHeader("Referer"));
+            //response.getWriter().write(path);
+        }else if(admin.equals("true")){
+            deleteFromAdmin(request,response,path);
+        }
+
     }
 
+    public void deleteFromAdmin(HttpServletRequest request,HttpServletResponse response
+            ,String path)
+            throws IOException {
+        File file = new File(base + "WEB-INF/files/"+path);
+        deleteAllFilesOfDir(file);
+        response.sendRedirect(request.getHeader("Referer"));
+    }
     public void deleteAllFilesOfDir(File path) {
         if (!path.exists())
             return;
