@@ -42,7 +42,7 @@ public class IsLogin {
     }
     public void setUsed(HttpSession session){
         MySql db = new MySql();
-        String sql = "SELECT diskused,maxdisk,filecount from files,user where username='"
+        String sql = "SELECT diskused,maxdisk,filecount,rank from files,user where username='"
                 +session.getAttribute("username")+"'";
         db.insert(sql);
         try {
@@ -51,6 +51,7 @@ public class IsLogin {
                 session.setAttribute("maxdisk",rs.getDouble("maxdisk"));
                 session.setAttribute("diskused",rs.getDouble("diskused"));
                 session.setAttribute("filecount",rs.getDouble("filecount"));
+                session.setAttribute("rank",rs.getInt("rank"));
             }else {
 
             }

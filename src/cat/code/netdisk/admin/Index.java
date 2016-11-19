@@ -33,8 +33,13 @@ public class Index extends HttpServlet{
             IsLogin il=new IsLogin();
             int login=il.isLogin(session,request,response);
             if(login==1||login==3){
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/admin/Index.jsp");
-                dispatcher.forward(request, response);
+                IsAdmin ia=new IsAdmin(request);
+                if(ia.isAdmin()==1){
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/admin/Index.jsp");
+                    dispatcher.forward(request, response);
+                }else {
+                    response.sendRedirect("/index.jsp");
+                }
             }else {
                 response.sendRedirect("/index.jsp");
             }

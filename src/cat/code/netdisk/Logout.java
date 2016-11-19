@@ -22,6 +22,7 @@ public class Logout extends HttpServlet{
             session.setAttribute("username",null);
             session.setAttribute("login","false");
             session.setAttribute("DEBUG",null);
+            session.setAttribute("rank",null);
             Cookie cusername= new Cookie("username",null);
             Cookie ctoken= new Cookie("token",null);
             Cookie maxdisk= new Cookie("maxdisk",null);

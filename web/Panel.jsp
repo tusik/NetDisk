@@ -2,6 +2,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.regex.Pattern" %>
 <%@ page import="java.util.regex.Matcher" %>
+<%@ page import="cat.code.netdisk.admin.IsAdmin" %>
 <%--
   Created by IntelliJ IDEA.
   User: zinc
@@ -19,7 +20,13 @@
 </head>
 <body>
 <div class="header">
-    <p>欢迎<%=session.getAttribute("username")%></p>
+    <p>欢迎<%=session.getAttribute("username")%>
+    <%
+        IsAdmin ia = new IsAdmin(request);
+        if(ia.isAdmin()==1){
+            out.print(" 管理员|<a href=\"/admin\">后台管理</a>");
+        }
+    %></p>
     <p class="use"> 使用量<%=session.getAttribute("diskused")%>/<%=session.getAttribute("maxdisk")%>MB |
     <%=session.getAttribute("filecount")%>个文件</p>
 
