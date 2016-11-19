@@ -20,12 +20,51 @@ public class User extends HttpServlet{
     private String username;
     private String rawpassword;
     private String salt;
+    private int rank;
+    private int id;
+    private String regdate;
+    private String password;
+    private double maxdisk;
+    private double diskused;
+    private int filecount;
     ConfigLoader CL = new ConfigLoader();
 
     public User(String username,String rawpassword){
         this.username=username;
         this.rawpassword=rawpassword;
     }
+    public User(int id,String username,String password,int rank,String regdate){
+        this.username=username;
+        this.password=password;
+        this.id=id;
+        this.regdate=regdate;
+        this.rank=rank;
+        setUsedInfo();
+    }
+    public void setUsedInfo(){
+        String sql="SELECT diskused,maxdisk,filecount from files where id='"+id+"'";
+        MySql db = new MySql();
+        db.insert(sql);
+        try {
+            ResultSet rs = db.pst.executeQuery();
+            if(rs.next()){
+                this.maxdisk=rs.getDouble("maxdisk");
+                this.diskused=rs.getDouble("diskused");
+                this.filecount=rs.getInt("filecount");
+            }
+            db.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public String getUsername(){return username;}
+    public String getPassword(){return password;}
+    public String getRegdate(){return regdate;}
+    public double getMaxdisk(){return maxdisk;}
+    public double getDiskused(){return diskused;}
+    public int getFilecount(){return filecount;}
+    public int getRank(){return rank;}
+    public int getId(){return id;}
     public int create(){
         salt=CL.GetValueByKey("salt");
         MySql db = new MySql();
@@ -47,6 +86,7 @@ public class User extends HttpServlet{
                 db.insert(sql1);
                 db.pst.execute();
                 createFileDir(username);
+                db.close();
                 return 1;//no error
             }
         }catch (SQLException e) {
