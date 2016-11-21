@@ -50,7 +50,7 @@ public class MySql {
             pst = conn.prepareStatement(sql);//准备执行语句
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }//
     }
     public void insert(String sql,String[] vals) {
         try {
