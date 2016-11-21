@@ -149,6 +149,8 @@ public class InitSystem extends HttpServlet{
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }finally {
+            db.close();
         }
     }
 

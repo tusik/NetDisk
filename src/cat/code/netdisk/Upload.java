@@ -62,17 +62,21 @@ public class Upload extends HttpServlet{
         db.insert(sql);
         try {
             db.pst.execute();
+
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            db.close();
         }
     }
     //检查使用量
     public int chechUsed(double size,String username){
         MySql db = new MySql();
         String sql = "SELECT diskused,maxdisk from files,user where username='"+username+"'";
-        db.insert(sql);
+        ResultSet rs=null;
         try {
-            ResultSet rs =db.pst.executeQuery();
+            db.insert(sql);
+            rs =db.pst.executeQuery();
             if(rs.next()){
                 if(size+rs.getDouble("diskused")>rs.getDouble("maxdisk")){
                     return -1;
@@ -85,6 +89,8 @@ public class Upload extends HttpServlet{
         } catch (SQLException e) {
             e.printStackTrace();
             return 999;
+        }finally {
+            db.close(rs);
         }
     }
 

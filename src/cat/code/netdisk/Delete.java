@@ -77,6 +77,8 @@ public class Delete extends HttpServlet{
             db.pst.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            db.close();
         }
     }
     public void canelSharing(String path){
@@ -86,6 +88,8 @@ public class Delete extends HttpServlet{
             db.pst.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            db.close();
         }
     }
 }

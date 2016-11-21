@@ -42,8 +42,9 @@ public class ShareList extends HttpServlet{
         ArrayList list = new ArrayList();
         String sql = "SELECT code FROM `share` WHERE username='"+username+"'";
         db.insert(sql);
+        ResultSet rs=null;
         try {
-            ResultSet rs =db.pst.executeQuery();
+            rs =db.pst.executeQuery();
             while(rs.next()){
                 list.add(rs.getString("code"));
             }
@@ -52,7 +53,7 @@ public class ShareList extends HttpServlet{
             e.printStackTrace();
             return null;
         }finally {
-            db.close();
+            db.close(rs);
         }
     }
     public ArrayList getNameList(String username){
@@ -60,8 +61,9 @@ public class ShareList extends HttpServlet{
         ArrayList list = new ArrayList();
         String sql = "SELECT path FROM `share` WHERE username='"+username+"'";
         db.insert(sql);
+        ResultSet rs=null;
         try {
-            ResultSet rs =db.pst.executeQuery();
+             rs =db.pst.executeQuery();
             while(rs.next()){
                 String name =rs.getString("path");
                 String[] tmp = name.split("/");
@@ -72,7 +74,7 @@ public class ShareList extends HttpServlet{
             e.printStackTrace();
             return null;
         }finally {
-            db.close();
+            db.close(rs);
         }
     }
 }

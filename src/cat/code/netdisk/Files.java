@@ -82,8 +82,9 @@ public class Files extends HttpServlet {
             throws IOException, ServletException {
         String sql = "SELECT path,username FROM `share` WHERE code=?";
         MySql db = new MySql(sql,id);
+        ResultSet rs=null;
         try {
-            ResultSet rs =db.pst.executeQuery();
+            rs =db.pst.executeQuery();
             if(rs.next()){
                 path =rs.getString("path");
                 username=rs.getString("username");
@@ -107,7 +108,7 @@ public class Files extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            db.close();
+            db.close(rs);
         }
     }
     public void getUserFile(HttpServletRequest request,HttpServletResponse response)

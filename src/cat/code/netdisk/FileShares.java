@@ -61,7 +61,7 @@ public class FileShares extends HttpServlet{
         String id= RandomStringUtils.randomAlphanumeric(6);
         String check0 = "SELECT code FROM `share` WHERE path=?";
         MySql db = new MySql(check0,path);
-        ResultSet rs;
+        ResultSet rs=null;
         try {
             rs=db.pst.executeQuery();
             if(rs.next()){
@@ -87,7 +87,7 @@ public class FileShares extends HttpServlet{
         } catch (SQLException e) {
             response.getWriter().write(e.toString());
         }finally {
-            db.close();
+            db.close(rs);
         }
     }
     public void canelShare(String id){
@@ -98,6 +98,8 @@ public class FileShares extends HttpServlet{
             db.pst.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            db.close();
         }
     }
 }

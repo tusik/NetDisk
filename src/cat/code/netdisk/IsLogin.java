@@ -57,7 +57,8 @@ public class IsLogin {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-
+        }finally {
+            db.close();
         }
     }
     public void setDebug(HttpSession session){

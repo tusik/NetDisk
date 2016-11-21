@@ -70,8 +70,9 @@ public class User extends HttpServlet{
         MySql db = new MySql();
         String sql = "SELECT id FROM `user` WHERE username = ?";
         db.insert(sql,username);
+        ResultSet rs=null;
         try {
-            ResultSet rs = db.pst.executeQuery();
+             rs = db.pst.executeQuery();
             if (rs.next()) {
                 return 2;//username repeat
             } else {
@@ -86,12 +87,13 @@ public class User extends HttpServlet{
                 db.insert(sql1);
                 db.pst.execute();
                 createFileDir(username);
-                db.close();
                 return 1;//no error
             }
         }catch (SQLException e) {
             e.printStackTrace();
             return 3;//database error
+        } finally {
+          db.close(rs);
         }
     }
     public void createFileDir(String username){

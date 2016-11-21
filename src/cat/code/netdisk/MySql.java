@@ -78,10 +78,24 @@ public class MySql {
 
     public void close() {
         try {
-            this.conn.close();
-            this.pst.close();
+            if(this.conn!=null){
+                this.conn.close();
+            }
+            if(this.pst!=null){
+                this.pst.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    public void close(ResultSet rs) {
+        close();
+        if(rs!=null){
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -35,8 +35,9 @@ public class token {
         MySql db = new MySql();
         String sql = "SELECT `password` FROM `user` where username=?";
         db.insert(sql,username);
+        ResultSet rs=null;
         try {
-            ResultSet rs = db.pst.executeQuery();
+             rs = db.pst.executeQuery();
             if (rs.next()) {
                 checktoken = rs.getString("password");
                 checktoken = DigestUtils.sha1Hex(username + checktoken);
@@ -52,6 +53,8 @@ public class token {
         } catch (SQLException e) {
             e.printStackTrace();
             return "a";
+        }finally {
+            db.close(rs);
         }
     }
     public void setSession(HttpSession session){
