@@ -57,7 +57,7 @@ public class MySql {
             Class.forName(name);//指定连接类型
             conn = DriverManager.getConnection(url, user, password);//获取连接
             pst = conn.prepareStatement(sql);//准备执行语句
-            for(int i=0;i<=vals.length;i++){
+            for(int i=0;i<vals.length;i++){
                 pst.setString(i+1,vals[i]);
             }
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-<%--
+<%@ page import="cat.code.netdisk.admin.ConfigFromSQL" %><%--
   Created by IntelliJ IDEA.
   User: zinc
   Date: 2016/10/21
@@ -10,7 +10,7 @@
 <html >
 <head>
     <meta charset="UTF-8">
-    <title>Login Form</title>
+    <title><%=ConfigFromSQL.GetValues("title")%>|Login Form</title>
 
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">

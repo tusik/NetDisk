@@ -28,7 +28,12 @@ public class UserManage extends HttpServlet{
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         IsAdmin ia = new IsAdmin(request);
+        if(request.getParameter("del_id")!=null) {
+            int del_id= Integer.parseInt(request.getParameter("del_id"));
+            new User(del_id).del();
+        }
         if(ia.isAdmin()==1){
+
             request.setAttribute("users",getUser());
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/admin/UserManage.jsp");
             dispatcher.forward(request, response);

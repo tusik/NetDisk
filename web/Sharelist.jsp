@@ -1,4 +1,5 @@
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="cat.code.netdisk.admin.ConfigFromSQL" %><%--
   Created by IntelliJ IDEA.
   User: zinc
   Date: 2016/10/29
@@ -8,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Share File List</title>
+    <title><%=ConfigFromSQL.GetValues("title")%>|Share File List</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
 </head>

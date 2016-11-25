@@ -69,6 +69,8 @@ public class Login extends HttpServlet{
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            db.close();
         }
 
 

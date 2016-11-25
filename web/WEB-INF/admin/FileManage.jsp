@@ -1,6 +1,7 @@
 <%@ page import="java.util.regex.Matcher" %>
 <%@ page import="java.util.regex.Pattern" %>
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="cat.code.netdisk.admin.ConfigFromSQL" %><%--
   Created by IntelliJ IDEA.
   User: zinc
   Date: 2016/11/17
@@ -10,11 +11,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title><%=ConfigFromSQL.GetValues("title")%></title>
     <link rel="stylesheet" href="../css/normalize.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+<jsp:include page="../header.jsp"></jsp:include>
 <div class="main">
     <div class="layer1">
 

@@ -29,6 +29,7 @@ public class InitSystem extends HttpServlet{
     String salt=null;
     String size=null;
     String[] regopen=null;
+    String title=null;
     public void doGet(HttpServletRequest request,HttpServletResponse response)
             throws IOException {
         doPost(request,response);
@@ -45,6 +46,7 @@ public class InitSystem extends HttpServlet{
         salt=request.getParameter("salt");
         size=request.getParameter("size");
         regopen=request.getParameterValues("reg");
+        title=request.getParameter("title");
 
         if(adminpw1.equals(adminpw)){
             String c=configSetting(dbname,dbuser,dbpw,adminname,salt,size);
@@ -57,6 +59,7 @@ public class InitSystem extends HttpServlet{
                         + RandomStringUtils.randomAlphanumeric(6).toString()+".jsp");
                 oldfile.renameTo(newfile);
                 createFileDir(adminname);
+                setConfig();
                 response.sendRedirect("/");
             }else if(c.equals("2")){
                 PrintWriter out= response.getWriter();
@@ -138,12 +141,22 @@ public class InitSystem extends HttpServlet{
                 "`time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP," +
                 "`del` tinyint NOT NULL DEFAULT '0'," +
                 "PRIMARY KEY(`id`))";
+
+        String sql3="CREATE TABLE `config` (" +
+                " id int NOT NULL AUTO_INCREMENT," +
+                " cfield char(25) NOT NULL," +
+                " cvalue char(50) NOT NULL," +
+                " date TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                " PRIMARY KEY(`id`))";
+
         try {
             db.insert(sql);
             db.pst.executeUpdate();
             db.insert(sql1);
             db.pst.executeUpdate();
             db.insert(sql2);
+            db.pst.executeUpdate();
+            db.insert(sql3);
             db.pst.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -170,6 +183,27 @@ public class InitSystem extends HttpServlet{
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }finally {
+            db.close();
+        }
+    }
+    public void setConfig(){
+        String sql = "INSERT INTO config (cfield,cvalue)" +
+                "VALUES" +
+                "('title',?)," +
+                "('salt',?)," +
+                "('DEBUG',?)," +
+                "('regopen',?)";
+        String[] vals={title,salt,"0","close"};
+        if(regopen!=null){
+            vals[3]="open";
+        }
+        MySql db = new MySql();
+        db.insert(sql,vals);
+        try {
+            db.pst.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }finally {
             db.close();
         }

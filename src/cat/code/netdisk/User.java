@@ -29,6 +29,9 @@ public class User extends HttpServlet{
     private int filecount;
     ConfigLoader CL = new ConfigLoader();
 
+    public User(int id){
+        this.id=id;
+    }
     public User(String username,String rawpassword){
         this.username=username;
         this.rawpassword=rawpassword;
@@ -94,6 +97,21 @@ public class User extends HttpServlet{
             return 3;//database error
         } finally {
           db.close(rs);
+        }
+    }
+    public void del(){
+
+        String sql = "DELETE FROM user WHERE id =?";
+        String sql1= "DELETE FROM files WHERE id =?";
+        MySql db = new MySql(sql, String.valueOf(id));
+        try {
+            db.pst.execute();
+            db.insert(sql1, String.valueOf(id));
+            db.pst.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            db.close();
         }
     }
     public void createFileDir(String username){

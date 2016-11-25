@@ -20,7 +20,7 @@
             IsAdmin ia = new IsAdmin(request);
             if(ia.isAdmin()==1){
                 if(!m.find()){
-                    out.print(" 管理员|<a href=\"/admin\">后台管理</a>");
+                    out.print(" 管理员|<a href=\"/manage\">后台管理</a>");
                 }else {
                     out.print(" 管理员|<a href=\"/\">前台页面</a>");
                 }

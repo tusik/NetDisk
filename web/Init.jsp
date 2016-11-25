@@ -19,6 +19,7 @@
         数据库名：<input type="text" name="dbname" id="dbname"/><br/>
         数据库用户名：<input type="text" name="dbuser" id="dbuser"/><br/>
         数据库密码：<input type="text" name="dbpw" id="dbpw"/><br/>
+        网站标题：<input type="text" name="title" id="title"/><br/>
         管理员用户名:<input type="text" name="adminname" id="adminname"/><br/>
         管理员密码：<input type="password"name="adminpw" id="adminpw"/><br/>
         重复密码：<input type="password"name="adminpw1" id="adminpw1"/><br/>

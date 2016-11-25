@@ -42,9 +42,9 @@ public class IsLogin {
     }
     public void setUsed(HttpSession session){
         MySql db = new MySql();
-        String sql = "SELECT diskused,maxdisk,filecount,rank from files,user where username='"
-                +session.getAttribute("username")+"'";
-        db.insert(sql);
+        String sql = "SELECT user.id,diskused,maxdisk,filecount,rank " +
+                "from files join user on user.id=files.id where username=?";
+        db.insert(sql,(String)session.getAttribute("username"));
         try {
             ResultSet rs = db.pst.executeQuery();
             if(rs.next()){
@@ -52,6 +52,8 @@ public class IsLogin {
                 session.setAttribute("diskused",rs.getDouble("diskused"));
                 session.setAttribute("filecount",rs.getDouble("filecount"));
                 session.setAttribute("rank",rs.getInt("rank"));
+                session.setAttribute("uid",rs.getInt("id"));
+
             }else {
 
             }

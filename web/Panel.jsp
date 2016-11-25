@@ -3,6 +3,7 @@
 <%@ page import="java.util.regex.Pattern" %>
 <%@ page import="java.util.regex.Matcher" %>
 <%@ page import="cat.code.netdisk.admin.IsAdmin" %>
+<%@ page import="cat.code.netdisk.admin.ConfigFromSQL" %>
 <%--
   Created by IntelliJ IDEA.
   User: zinc
@@ -13,24 +14,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>NetDisk Panel</title>
+    <title><%=ConfigFromSQL.GetValues("title")%>|NetDisk Panel</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>
-<div class="header">
-    <p>欢迎<%=session.getAttribute("username")%>
-    <%
-        IsAdmin ia = new IsAdmin(request);
-        if(ia.isAdmin()==1){
-            out.print(" 管理员|<a href=\"/admin\">后台管理</a>");
-        }
-    %></p>
-    <p class="use"> 使用量<%=session.getAttribute("diskused")%>/<%=session.getAttribute("maxdisk")%>MB |
-    <%=session.getAttribute("filecount")%>个文件</p>
-
-</div>
+<jsp:include page="WEB-INF/header.jsp"></jsp:include>
 <div class="main">
     <%if(session.getAttribute("login").equals("true")){//判断登陆状态%>
     <%
