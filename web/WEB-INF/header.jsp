@@ -16,7 +16,6 @@
         <%
             Pattern r = Pattern.compile("/admin");
             Matcher m = r.matcher(url);
-
             IsAdmin ia = new IsAdmin(request);
             if(ia.isAdmin()==1){
                 if(!m.find()){
@@ -25,7 +24,8 @@
                     out.print(" 管理员|<a href=\"/\">前台页面</a>");
                 }
             }
-        %></p>
+        %>
+    | <a href="/Logout">Logout</a> | <a href="/Sharelist">Share List</a></p>
     <p class="use">
         使用量
         <%

@@ -90,8 +90,8 @@
                        value="<%if(request.getParameter("dir")!=null)out.print(request.getParameter("dir"));%>/"/><br/>
                 <input class="pinput" type="submit" value="Create Dir"><br/>
             </form>
-            <a href="/Sharelist">Share List</a><br/>
-            <a href="/Logout">Logout</a>
+            <br/>
+
         </div>
     </div>
     <%}else{%>

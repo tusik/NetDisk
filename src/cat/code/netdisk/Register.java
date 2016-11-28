@@ -1,5 +1,6 @@
 package cat.code.netdisk;
 
+import cat.code.netdisk.admin.ConfigFromSQL;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.annotation.WebServlet;
@@ -26,8 +27,8 @@ public class Register extends HttpServlet {
     }
     public void doPost(HttpServletRequest request,HttpServletResponse response)
             throws IOException {
-        ConfigLoader CL = new ConfigLoader();
-        if(CL.GetValueByKey("regopen").equals("true")){
+        ConfigFromSQL CL = new ConfigFromSQL();
+        if(CL.GetValues("regopen").equals("open")){
             String username = request.getParameter("username");
             String pw = request.getParameter("pw");
             String rpw = request.getParameter("pw1");

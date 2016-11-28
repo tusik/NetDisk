@@ -35,7 +35,6 @@ public class CreateDir extends HttpServlet{
         }
     }
     public boolean createDir(String dirname,String username){
-
         if(dirCheck(dirname)){
             String filedir = this.getClass().getClassLoader().getResource("../../WEB-INF/files/"
                     +username+"/").getPath();
@@ -46,7 +45,6 @@ public class CreateDir extends HttpServlet{
         }else {
             return false;
         }
-
     }
     public boolean dirCheck(String dir){
         String pattern = "((.*)(\\.)(.*)|(.*)>(.*)|(.*)<(.*)|(.*)\\?(.*)|" +
